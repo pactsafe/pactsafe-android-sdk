@@ -1,0 +1,2 @@
+rootProject.name='PactSafe Android SDK'
+include ':app'
