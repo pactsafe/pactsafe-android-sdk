@@ -1,9 +1,8 @@
-
-
 plugins {
     id(BuildPlugins.androidApplication)
     kotlin(BuildPlugins.kotlinAndroid)
     kotlin(BuildPlugins.kotlinAndroidExtensions)
+    id(BuildPlugins.serialization) version kotlinVersion
 }
 
 android {
@@ -24,13 +23,14 @@ android {
                     "proguard-rules.pro"
                 )
                 manifestPlaceholders = mapOf("enableCrashReporting" to "false")
+                buildConfigField("String", "PS_BASE_URL", "\"https://pactsafe.io\"")
 
             }
             getByName("debug") {
                 isMinifyEnabled = false
                 isDebuggable = true
                 manifestPlaceholders = mapOf("enableCrashReporting" to "true")
-
+                buildConfigField("String", "PS_BASE_URL", "\"https://pactsafe.io\"")
             }
         }
     }
@@ -46,4 +46,17 @@ dependencies {
     testImplementation(TestDependencies.junit)
     androidTestImplementation(TestDependencies.androidxTestRunner)
     androidTestImplementation(TestDependencies.espressoCore)
+
+    implementation(Dependencies.retrofit)
+    implementation(Dependencies.retrofitConverter)
+    implementation(Dependencies.androidCoroutines)
+    implementation(Dependencies.ktxCore)
+    implementation(Dependencies.koin)
+    implementation(Dependencies.coroutines)
+    implementation(Dependencies.androidCoroutines)
+    implementation(Dependencies.constraintLayout)
+    implementation(Dependencies.gson)
+    implementation(Dependencies.okHttp)
+    implementation(Dependencies.okHttpLogging)
+    implementation(Dependencies.serializationRuntime)
 }

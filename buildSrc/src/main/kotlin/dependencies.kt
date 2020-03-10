@@ -28,6 +28,7 @@ object BuildPlugins {
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     const val kotlinAndroid = "android"
     const val kotlinAndroidExtensions = "android.extensions"
+    const val serialization = "org.jetbrains.kotlin.plugin.serialization"
 }
 
 object Dependencies {
@@ -49,6 +50,7 @@ object Dependencies {
         const val rxJava = "2.2.13"
         const val rxKotlin = "2.4.0"
         const val rxAndroid = "2.1.1"
+        const val serializationVersion = "0.13.0"
         const val timber = "4.7.1"
     }
 
@@ -71,11 +73,9 @@ object Dependencies {
     const val materialDialogLifecycle = "com.afollestad.material-dialogs:lifecycle:${Versions.materialDialog}"
     const val okHttp = "com.squareup.okhttp3:okhttp:${Versions.okHttp}"
     const val okHttpLogging = "com.squareup.okhttp3:logging-interceptor:${Versions.okHttp}"
-    const val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
-    const val rxKotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxKotlin}"
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
     const val retrofitConverter = "com.squareup.retrofit2:converter-gson:${Versions.retrofit}"
-    const val rxAndroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxAndroid}"
+    const val serializationRuntime = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${Versions.serializationVersion}"
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
     const val viewModelScope = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
 }
