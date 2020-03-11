@@ -1,5 +1,5 @@
 plugins {
-    id(BuildPlugins.androidApplication)
+    id(BuildPlugins.androidLibrary)
     kotlin(BuildPlugins.kotlinAndroid)
     kotlin(BuildPlugins.kotlinAndroidExtensions)
     id(BuildPlugins.serialization) version kotlinVersion
@@ -8,7 +8,6 @@ plugins {
 android {
     compileSdkVersion(Android.compileSdkVersion)
     defaultConfig {
-        applicationId = AppInfo.identifier
         minSdkVersion(Android.minSdk)
         targetSdkVersion(Android.targetSdk)
         versionCode = 1

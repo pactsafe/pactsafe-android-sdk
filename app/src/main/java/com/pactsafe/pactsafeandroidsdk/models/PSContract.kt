@@ -14,5 +14,5 @@ data class PSContract(
      */
     val key: String,
     // The change summary (if provided) of the published contract.
-    val changeSummary: String?
+    val changeSummary: String? = null
 )
