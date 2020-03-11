@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 typealias PSSignerID = String
 
 @Serializable
-data class PSSIgner(
+data class PSSigner(
     val signerId: PSSignerID,
     val customData: PSCustomData
 )
