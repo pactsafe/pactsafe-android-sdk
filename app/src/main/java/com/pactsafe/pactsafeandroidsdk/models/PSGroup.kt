@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PSGroup(
     val type: String,
-    val renderID: String?,
-    val forceScroll: Boolean?,
+    val render_id: String?,
+    val force_scroll: Boolean?,
     //Unused and is currently always false
     val triggered: Boolean?,
     /**
@@ -14,7 +14,7 @@ data class PSGroup(
      * The setting of whether all contracted should be displayed immediately
      * A contract will only be displayed if the signer hasn't accepted the latest version
      */
-    val displayAll: Boolean? = false,
+    val display_all: Boolean? = false,
     // Group Key
     val key: String,
     // Group ID
@@ -24,36 +24,36 @@ data class PSGroup(
     // Contract Version IDs that are part of the group.
     val versions: List<String>,
     // Major version IDs of the contract
-    val majorVersions: List<String>,
+    val major_versions: List<String>,
     // Clickwrap style of the group
     val style: String?,
     // Current setting for whether the form submission should be blocked
-    val blockFormSubmission: Boolean,
+    val block_form_submission: Boolean,
     // Alert message to be displayed when acceptance is required
-    val alertMessage: String,
+    val alert_message: String,
     // URL of the legal center for the PactSafe site.
-    val legalCenterURL: String,
+    val legal_center_url: String,
     // Acceptance language that is set within the group's settings.
-    val acceptanceLanguage: String,
+    val acceptance_language: String,
     // Contracts data where the contract ID is the key.
-    val contactData: Map<String, PSContract>,
+    val contract_data: Map<String, PSContract>,
     // The time (in epoch) of when the group was fetched.
-    val renderedTime: Int,
+    val rendered_time: Int,
     // The rendered HTML of the clickwrap.
-    val contractHTML: String?,
+    val contract_html: String?,
     // Locale of the group
     val locale: String?,
     // The current setting within the group for whether a confirmation should be sent upon acceptance.
-    val confirmationEmail: Boolean
+    val confirmation_email: Boolean
 ) {
 
     // The contract IDs separated by a`,` and returned as a string.
-    var contractIds: String
+    var contract_ids: String
         get() = contracts.map { it }.joinToString(",")
         set(value) {}
 
     // The contract versions separated by a `,` and returned as a string.
-    var contractVersions: String?
+    var contract_versions: String?
         get() = versions.map { it }.joinToString(",")
         set(value) {}
 

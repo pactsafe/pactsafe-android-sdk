@@ -36,4 +36,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation project(":app")
+
+    implementation(Dependencies.androidCoroutines)
+    implementation(Dependencies.ktxCore)
+    implementation(Dependencies.koin)
+    implementation(Dependencies.coroutines)
 }
