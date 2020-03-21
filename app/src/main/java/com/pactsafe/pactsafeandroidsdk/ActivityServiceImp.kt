@@ -4,27 +4,34 @@ import com.pactsafe.pactsafeandroidsdk.data.ActivityAPI
 import com.pactsafe.pactsafeandroidsdk.data.ActivityService
 import com.pactsafe.pactsafeandroidsdk.data.ApplicationPreferences
 import com.pactsafe.pactsafeandroidsdk.models.PSGroup
+import com.pactsafe.pactsafeandroidsdk.models.PSResponse
 import com.pactsafe.pactsafeandroidsdk.util.Outcome
 import com.pactsafe.pactsafeandroidsdk.util.injector
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class ActivityServiceImp(private val activityAPI: ActivityAPI) :
     ActivityService {
 
-    override suspend fun preloadActivity(groupKey: String, siteAccessId: String): Outcome<PSGroup> {
+    override fun preloadActivity(groupKey: String, siteAccessKey: String): Outcome<PSGroup> {
 
         val appPreferences: ApplicationPreferences = injector()
+        val result = activityAPI.preload(siteAccessKey, groupKey)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnError { PSApp.logDebug(this::class.java, it.localizedMessage)}
+            .blockingSingle()
 
-        val result = activityAPI.preload(siteAccessId, groupKey)
         return (if (result.isSuccessful) {
             val psGroup = result.body() as PSGroup
             with(appPreferences) {
-                this.siteAccessId = siteAccessId
+                this.siteAccessId = siteAccessKey
                 this.group = psGroup
                 this.groupKey = groupKey
             }
-            Outcome.of(result.body() as PSGroup)
+            Outcome.of(psGroup)
         } else {
-            Outcome.error("There was an error ")
+            Outcome.error(result.errorBody() as PSResponse)
         })
     }
 }

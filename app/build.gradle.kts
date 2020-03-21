@@ -22,14 +22,14 @@ android {
                     "proguard-rules.pro"
                 )
                 manifestPlaceholders = mapOf("enableCrashReporting" to "false")
-                buildConfigField("String", "PS_BASE_URL", "\"https://pactsafe.io\"" )
+                buildConfigField("String", "PS_BASE_URL", "\"https://pactsafe.io\"")
 
             }
             getByName("debug") {
                 isMinifyEnabled = false
                 isDebuggable = true
                 manifestPlaceholders = mapOf("enableCrashReporting" to "true")
-                buildConfigField("String", "PS_BASE_URL", "\"https://pactsafe.io\"" )
+                buildConfigField("String", "PS_BASE_URL", "\"https://pactsafe.io\"")
             }
         }
     }
@@ -47,10 +47,14 @@ dependencies {
     androidTestImplementation(TestDependencies.espressoCore)
 
     implementation(Dependencies.retrofit)
+    implementation(Dependencies.retrofitCallAdapter)
     implementation(Dependencies.retrofitConverter)
     implementation(Dependencies.androidCoroutines)
     implementation(Dependencies.ktxCore)
     implementation(Dependencies.koin)
+    implementation(Dependencies.rxJava)
+    implementation(Dependencies.rxKotlin)
+    implementation(Dependencies.rxAndroid)
     implementation(Dependencies.coroutines)
     implementation(Dependencies.androidCoroutines)
     implementation(Dependencies.constraintLayout)
