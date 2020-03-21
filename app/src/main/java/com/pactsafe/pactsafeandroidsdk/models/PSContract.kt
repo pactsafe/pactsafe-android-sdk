@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PSContract(
     // The version ID of the published contract.
-    val publishedVersion: String,
+    val published_version: String,
     // The title of the contract.
     val title: String,
     /**
@@ -14,5 +14,5 @@ data class PSContract(
      */
     val key: String,
     // The change summary (if provided) of the published contract.
-    val changeSummary: String? = null
+    val change_summary: String? = null
 )

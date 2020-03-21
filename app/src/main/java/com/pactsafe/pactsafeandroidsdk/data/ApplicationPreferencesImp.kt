@@ -37,7 +37,7 @@ class ApplicationPreferencesImp(val context: Context) : ApplicationPreferences {
         set(value) {
             preferences.edit().putString(SITE_ACCESS_ID, value).apply()
         }
-    override var groupKey: String
+    override var psGroupKey: String
         get() = preferences.getString(GROUP_KEY, "") ?: ""
         set(value) {
             preferences.edit().putString(GROUP_KEY, value).apply()

@@ -2,10 +2,8 @@ package com.pactsafe.demo
 
 import android.app.Application
 import com.pactsafe.pactsafeandroidsdk.PSApp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
 
-class MainApplication : Application(){
+class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()

@@ -1,9 +1,8 @@
-package com.pactsafe.pactsafeandroidsdk
+package com.pactsafe.pactsafeandroidsdk.di
 
-import com.pactsafe.pactsafeandroidsdk.data.ActivityAPI
-import com.pactsafe.pactsafeandroidsdk.data.ActivityService
-import com.pactsafe.pactsafeandroidsdk.data.ApplicationPreferences
-import com.pactsafe.pactsafeandroidsdk.data.ApplicationPreferencesImp
+import com.pactsafe.pactsafeandroidsdk.BuildConfig
+import com.pactsafe.pactsafeandroidsdk.PSApp
+import com.pactsafe.pactsafeandroidsdk.data.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -17,7 +16,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 val appModule = module {
 
     single<ActivityService> { ActivityServiceImp(get()) }
-    single<ActivityAPI> { getRetrofitApi(createOkHttpClient(), BuildConfig.PS_BASE_URL) }
+    single<ActivityAPI> {
+        getRetrofitApi(
+            createOkHttpClient(),
+            BuildConfig.PS_BASE_URL
+        )
+    }
     single<ApplicationPreferences> { ApplicationPreferencesImp(androidContext()) }
 
 }
@@ -26,7 +30,10 @@ fun createOkHttpClient(authenticate: Boolean = false): OkHttpClient {
     val httpLoggingInterceptor = HttpLoggingInterceptor()
     httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
     val client = OkHttpClient.Builder()
-        .addInterceptor(httpLoggingInterceptor)
+
+    if (PSApp.debug) {
+        client.addInterceptor(httpLoggingInterceptor)
+    }
 
     if (authenticate) {
         client.addInterceptor(AuthenticationInterceptor())
