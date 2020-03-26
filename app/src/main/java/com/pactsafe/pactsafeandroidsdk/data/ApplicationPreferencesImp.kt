@@ -6,7 +6,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import timber.log.Timber
 
-class ApplicationPreferencesImp(val context: Context) : ApplicationPreferences {
+class ApplicationPreferencesImp(private val context: Context) : ApplicationPreferences {
 
     companion object {
         private const val PREFERENCES = "com.pactsafe.PREFERENCES"
@@ -32,7 +32,7 @@ class ApplicationPreferencesImp(val context: Context) : ApplicationPreferences {
             val stringValue = Json(JsonConfiguration.Stable).stringify(PSGroup.serializer(), value ?: return)
             preferences.edit().putString(GROUP, stringValue).apply()
         }
-    override var siteAccessId: String
+    override var siteAccessId: String?
         get() = preferences.getString(SITE_ACCESS_ID, "") ?: ""
         set(value) {
             preferences.edit().putString(SITE_ACCESS_ID, value).apply()

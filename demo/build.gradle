@@ -41,4 +41,5 @@ dependencies {
     implementation(Dependencies.ktxCore)
     implementation(Dependencies.koin)
     implementation(Dependencies.coroutines)
+    implementation(Dependencies.material)
 }

@@ -5,6 +5,6 @@ import com.pactsafe.pactsafeandroidsdk.models.PSGroup
 
 interface ApplicationPreferences {
     var group: PSGroup?
-    var siteAccessId: String
+    var siteAccessId: String?
     var psGroupKey: String
 }
