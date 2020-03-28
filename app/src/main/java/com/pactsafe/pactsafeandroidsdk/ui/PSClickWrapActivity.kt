@@ -36,6 +36,11 @@ abstract class PSClickWrapActivity : AppCompatActivity() {
     }
 
     abstract fun onPreLoaded(psGroup: PSGroup)
+    abstract fun onAcceptanceComplete()
+
+    fun fetchSignedStatus(signerId: String) {
+
+    }
 
     override fun onStop() {
         super.onStop()

@@ -8,4 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="Text" />
+
+    <style name="Text.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@android:color/white</item>
+    </style>
+
+    <style name="Text.EditText">
+        <item name="android:maxLines">1</item>
+        <item name="maxCharacterCount">40</item>
+    </style>
+
 </resources>

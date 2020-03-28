@@ -13,15 +13,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         //TODO Determine if it makes sense to make checkbox/alert an default arg
-        btnSignUp.setOnClickListener {
+        btn_sign_up.setOnClickListener {
             this.startActivity(Intent(this, SignupActivity::class.java))
         }
 
-        btnLoginWithAlert.setOnClickListener {
+        btn_login_with_alert.setOnClickListener {
             this.startActivity(Intent(this, LoginActivity::class.java))
         }
 
-        btnLoginWithCheckbox.setOnClickListener {
+        btn_login_with_checkbox.setOnClickListener {
             this.startActivity(Intent(this, LoginActivity::class.java))
         }
     }
