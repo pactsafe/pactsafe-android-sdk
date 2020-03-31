@@ -8,8 +8,8 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        PSApp.init("790d7014-9806-4acc-8b8a-30c4987f3a95", this, debug = true, testData = true)
-        PSApp.preload("example-mobile-app-group")
+        PSApp.init(BuildConfig.SITE_ACCESS_ID, BuildConfig.GROUP_KEY, this, debug = true, testData = true)
+        PSApp.preload()
     }
 
 

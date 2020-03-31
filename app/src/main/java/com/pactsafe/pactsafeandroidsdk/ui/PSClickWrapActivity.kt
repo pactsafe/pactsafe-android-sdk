@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.pactsafe.pactsafeandroidsdk.PSApp
 import com.pactsafe.pactsafeandroidsdk.data.ApplicationPreferences
+import com.pactsafe.pactsafeandroidsdk.models.PSContract
 import com.pactsafe.pactsafeandroidsdk.models.PSGroup
 import com.pactsafe.pactsafeandroidsdk.util.injector
 import io.reactivex.disposables.CompositeDisposable
@@ -19,7 +20,7 @@ abstract class PSClickWrapActivity : AppCompatActivity() {
         val appPreferences: ApplicationPreferences = injector()
 
         /*
-        Here we want to ensure that if the group preloads in time for onCreate,
+        Here we want to ensure that if the group pre-loads in time for onCreate,
         then we don't need to setup a disposable for observation.
          */
         if (PSApp.hasPreloaded) {
@@ -36,7 +37,9 @@ abstract class PSClickWrapActivity : AppCompatActivity() {
     }
 
     abstract fun onPreLoaded(psGroup: PSGroup)
-    abstract fun onAcceptanceComplete()
+    abstract fun onContractLinkClicked(url: String)
+    abstract fun onAcceptanceComplete(checked: Boolean)
+
 
     fun fetchSignedStatus(signerId: String) {
 

@@ -26,9 +26,15 @@ class LoginActivity : PSClickWrapActivity() {
         println("THE LOGIN ACTIVITY HAS GOTTEN THE PRELOAD")
     }
 
-    override fun onAcceptanceComplete() {
-        println("ACCEPTANCE COMPLETE")
+    override fun onContractLinkClicked(url: String) {
+        println("CONTRACT LINK: $url")
     }
+
+    override fun onAcceptanceComplete(checked: Boolean) {
+        println("IS CHECKED : $checked")
+        btn_login.isEnabled = checked
+    }
+
 
     private fun enableLoginBtn() {
         btn_login.isEnabled = edit_username.isValidEmail() && edit_password.isValidPassword()

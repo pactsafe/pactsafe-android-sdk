@@ -94,6 +94,13 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.pactsafe.pactsafeandroidsdk.ui.PSCheckBoxView
+            android:id="@+id/ps_checkbox_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:useOsBrowser="false"/>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
