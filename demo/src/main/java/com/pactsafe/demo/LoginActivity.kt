@@ -4,6 +4,8 @@ import android.os.Bundle
 import com.pactsafe.pactsafeandroidsdk.models.PSGroup
 import com.pactsafe.pactsafeandroidsdk.ui.PSClickWrapActivity
 import kotlinx.android.synthetic.main.activity_login_alert.*
+import kotlinx.android.synthetic.main.activity_login_alert.edit_password
+import kotlinx.android.synthetic.main.activity_signup.*
 
 class LoginActivity : PSClickWrapActivity() {
 
@@ -19,6 +21,10 @@ class LoginActivity : PSClickWrapActivity() {
             enableLoginBtn()
         }
 
+        btn_login.setOnClickListener {
+            fetchSignedStatus(edit_username.text.toString())
+        }
+
         supportActionBar?.setHomeButtonEnabled(true)
     }
 
@@ -32,7 +38,7 @@ class LoginActivity : PSClickWrapActivity() {
 
     override fun onAcceptanceComplete(checked: Boolean) {
         println("IS CHECKED : $checked")
-        btn_signup.isEnabled = checked
+        btn_login.isEnabled = checked
     }
 
     override fun onSendAgreedComplete(downloadUrl: String) {
@@ -41,6 +47,6 @@ class LoginActivity : PSClickWrapActivity() {
 
 
     private fun enableLoginBtn() {
-        btn_signup.isEnabled = edit_username.isValidEmail() && edit_password.isValidPassword()
+        btn_login.isEnabled = edit_username.isValidEmail() && edit_password.isValidPassword()
     }
 }

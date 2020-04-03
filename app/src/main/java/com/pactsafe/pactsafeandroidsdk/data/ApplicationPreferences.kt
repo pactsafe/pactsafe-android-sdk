@@ -7,4 +7,6 @@ interface ApplicationPreferences {
     var group: PSGroup?
     var siteAccessId: String?
     var psGroupKey: String
+
+    fun clear()
 }

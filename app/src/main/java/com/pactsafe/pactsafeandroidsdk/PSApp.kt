@@ -9,8 +9,8 @@ import com.pactsafe.pactsafeandroidsdk.data.handleThrowable
 import com.pactsafe.pactsafeandroidsdk.di.appModule
 import com.pactsafe.pactsafeandroidsdk.models.PSGroup
 import com.pactsafe.pactsafeandroidsdk.models.PSSigner
+import com.pactsafe.pactsafeandroidsdk.models.PSSignerID
 import com.pactsafe.pactsafeandroidsdk.ui.PSClickWrapActivity
-import com.pactsafe.pactsafeandroidsdk.util.PSResult
 import com.pactsafe.pactsafeandroidsdk.util.injector
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
@@ -74,6 +74,11 @@ object PSApp {
 
     }
 
+    fun clearPSApp() {
+        val appPreferences: ApplicationPreferences = injector()
+        appPreferences.clear()
+    }
+
     fun loadGroupData(): PSGroup? {
         val applicationPreferences: ApplicationPreferences = injector()
         return applicationPreferences.group
@@ -133,6 +138,12 @@ object PSApp {
         val activityService: ActivityService = injector()
 
         return activityService.sendActivity(signer, loadGroupData())
+    }
+
+    fun fetchSignedStatus(signer: PSSignerID): Single<Map<String, Boolean>> {
+        val activityService: ActivityService = injector()
+
+        return activityService.fetchSignedStatus(signer, loadGroupData()).map { it.body() }
     }
 }
 

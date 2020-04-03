@@ -16,5 +16,8 @@ interface ActivityAPI {
     @POST("/send")
     fun sendActivity(@QueryMap() queries: Map<String, String?>): Single<Response<Unit>>
 
+    @GET("/latest")
+    fun signedStatus(@QueryMap() queries: Map<String, String?>): Single<Response<Map<String, Boolean>>>
+
 
 }

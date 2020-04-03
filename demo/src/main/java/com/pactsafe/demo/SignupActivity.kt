@@ -48,6 +48,9 @@ class SignupActivity : PSClickWrapActivity() {
         }
     }
 
+    /**
+     * PS METHODS
+     */
     override fun onPreLoaded(psGroup: PSGroup) {
         println("ON PRELOADED")
     }
@@ -58,15 +61,16 @@ class SignupActivity : PSClickWrapActivity() {
 
     override fun onAcceptanceComplete(checked: Boolean) {
         enableLoginButton = checked
-        btn_signup.isEnabled = enableLoginButton
+        enableLoginBtn()
     }
 
     override fun onSendAgreedComplete(downloadUrl: String) {
         startActivity(Intent(this, HomeActivity::class.java))
     }
+    /**/
+
 
     private fun enableLoginBtn() {
-
         btn_signup.isEnabled = edit_first_name.text?.isNotEmpty() ?: false
                 && edit_last_name.text?.isNotEmpty() ?: false
                 && edit_password.text?.length == edit_re_password.text?.length

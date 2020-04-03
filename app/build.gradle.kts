@@ -22,18 +22,17 @@ android {
                     "proguard-rules.pro"
                 )
                 manifestPlaceholders = mapOf("enableCrashReporting" to "false")
-                buildConfigField("String", "PS_BASE_URL", "\"https://pactsafe.io\"")
+                buildConfigField("String", "PS_BASE_URL", "\"https://dev.pactsafe.io\"")
 
             }
             getByName("debug") {
                 isMinifyEnabled = false
                 isDebuggable = true
                 manifestPlaceholders = mapOf("enableCrashReporting" to "true")
-                buildConfigField("String", "PS_BASE_URL", "\"https://pactsafe.io\"")
+                buildConfigField("String", "PS_BASE_URL", "\"https://dev.pactsafe.io\"")
             }
         }
     }
-
 }
 
 dependencies {

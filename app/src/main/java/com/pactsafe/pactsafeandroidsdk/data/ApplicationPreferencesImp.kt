@@ -43,4 +43,8 @@ class ApplicationPreferencesImp(private val context: Context) : ApplicationPrefe
             preferences.edit().putString(GROUP_KEY, value).apply()
         }
 
+    override fun clear() {
+        preferences.edit().clear().apply()
+    }
+
 }

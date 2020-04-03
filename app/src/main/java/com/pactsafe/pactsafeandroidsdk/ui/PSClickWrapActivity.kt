@@ -6,6 +6,7 @@ import com.pactsafe.pactsafeandroidsdk.PSApp
 import com.pactsafe.pactsafeandroidsdk.data.ApplicationPreferences
 import com.pactsafe.pactsafeandroidsdk.models.PSGroup
 import com.pactsafe.pactsafeandroidsdk.models.PSSigner
+import com.pactsafe.pactsafeandroidsdk.models.PSSignerID
 import com.pactsafe.pactsafeandroidsdk.util.injector
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -42,17 +43,27 @@ abstract class PSClickWrapActivity : AppCompatActivity() {
     abstract fun onSendAgreedComplete(downloadUrl: String)
 
 
-    fun fetchSignedStatus(signerId: String) {
-
+    fun fetchSignedStatus(signer: PSSignerID) {
+        disposables.add(
+            PSApp.fetchSignedStatus(signer)
+                .subscribe({
+                    for ((key, value) in it) {
+                        println("THESE ARE THE RESULT ${key}: $value")
+                    }
+                }, {
+                    Timber.e(it, "There was an error fetching the data. ${it.localizedMessage}")
+                })
+        )
     }
 
     fun sendAgreed(signer: PSSigner) {
-        disposables.add(PSApp.sendAgreed(signer)
-            .subscribe({
-                onSendAgreedComplete(it.headers()["X-Download-URL"] ?: "")
-            }, {
-                Timber.e("There was an error: ${it.localizedMessage}")
-            })
+        disposables.add(
+            PSApp.sendAgreed(signer)
+                .subscribe({
+                    onSendAgreedComplete(it.headers()["X-Download-URL"] ?: "")
+                }, {
+                    Timber.e("There was an error: ${it.localizedMessage}")
+                })
         )
 
     }
