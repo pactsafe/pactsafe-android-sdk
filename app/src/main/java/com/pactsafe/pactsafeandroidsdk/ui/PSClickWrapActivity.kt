@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.pactsafe.pactsafeandroidsdk.PSApp
 import com.pactsafe.pactsafeandroidsdk.data.ApplicationPreferences
-import com.pactsafe.pactsafeandroidsdk.models.PSContract
 import com.pactsafe.pactsafeandroidsdk.models.PSGroup
+import com.pactsafe.pactsafeandroidsdk.models.PSSigner
 import com.pactsafe.pactsafeandroidsdk.util.injector
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -37,11 +37,23 @@ abstract class PSClickWrapActivity : AppCompatActivity() {
     }
 
     abstract fun onPreLoaded(psGroup: PSGroup)
-    abstract fun onContractLinkClicked(url: String)
+    abstract fun onContractLinkClicked(title: String, url: String)
     abstract fun onAcceptanceComplete(checked: Boolean)
+    abstract fun onSendAgreedComplete(downloadUrl: String)
 
 
     fun fetchSignedStatus(signerId: String) {
+
+    }
+
+    fun sendAgreed(signer: PSSigner) {
+        disposables.add(PSApp.sendAgreed(signer)
+            .subscribe({
+                onSendAgreedComplete(it.headers()["X-Download-URL"] ?: "")
+            }, {
+                Timber.e("There was an error: ${it.localizedMessage}")
+            })
+        )
 
     }
 

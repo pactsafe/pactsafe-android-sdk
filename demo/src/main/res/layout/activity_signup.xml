@@ -102,11 +102,11 @@
             app:useOsBrowser="false"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_signup"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:enabled="false"
-            android:text="Login"
+            android:text="Signup"
             android:textColor="@android:color/white"
             app:cornerRadius="0dp" />
     </LinearLayout>

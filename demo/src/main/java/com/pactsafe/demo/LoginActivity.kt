@@ -26,19 +26,21 @@ class LoginActivity : PSClickWrapActivity() {
         println("THE LOGIN ACTIVITY HAS GOTTEN THE PRELOAD")
     }
 
-    override fun onContractLinkClicked(url: String) {
+    override fun onContractLinkClicked(title: String, url: String) {
         println("CONTRACT LINK: $url")
     }
 
     override fun onAcceptanceComplete(checked: Boolean) {
         println("IS CHECKED : $checked")
-        btn_login.isEnabled = checked
+        btn_signup.isEnabled = checked
+    }
+
+    override fun onSendAgreedComplete(downloadUrl: String) {
+        TODO("Not yet implemented")
     }
 
 
     private fun enableLoginBtn() {
-        btn_login.isEnabled = edit_username.isValidEmail() && edit_password.isValidPassword()
+        btn_signup.isEnabled = edit_username.isValidEmail() && edit_password.isValidPassword()
     }
-
-
 }

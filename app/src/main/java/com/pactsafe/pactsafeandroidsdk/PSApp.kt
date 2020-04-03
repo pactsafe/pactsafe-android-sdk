@@ -8,13 +8,17 @@ import com.pactsafe.pactsafeandroidsdk.data.ApplicationPreferences
 import com.pactsafe.pactsafeandroidsdk.data.handleThrowable
 import com.pactsafe.pactsafeandroidsdk.di.appModule
 import com.pactsafe.pactsafeandroidsdk.models.PSGroup
+import com.pactsafe.pactsafeandroidsdk.models.PSSigner
 import com.pactsafe.pactsafeandroidsdk.ui.PSClickWrapActivity
+import com.pactsafe.pactsafeandroidsdk.util.PSResult
 import com.pactsafe.pactsafeandroidsdk.util.injector
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import retrofit2.Response
 import timber.log.Timber
 
 object PSApp {
@@ -103,7 +107,14 @@ object PSApp {
     fun getContractLinks(context: Context): List<() -> Unit> {
         val activity = context as PSClickWrapActivity
         return loadGroupData()?.let { psGroup ->
-            psGroup.contract_data.values.map { { activity.onContractLinkClicked("${psGroup.legal_center_url}#${it.key}") } }
+            psGroup.contract_data.values.map {
+                {
+                    activity.onContractLinkClicked(
+                        it.title,
+                        "${psGroup.legal_center_url}#${it.key}"
+                    )
+                }
+            }
         } ?: emptyList()
     }
 
@@ -116,6 +127,12 @@ object PSApp {
 
     fun endSubscriptions() {
         disposables.clear()
+    }
+
+    fun sendAgreed(signer: PSSigner): Single<Response<Unit>> {
+        val activityService: ActivityService = injector()
+
+        return activityService.sendActivity(signer, loadGroupData())
     }
 }
 
