@@ -7,9 +7,12 @@ import android.widget.LinearLayout
 import com.pactsafe.pactsafeandroidsdk.PSApp
 import com.pactsafe.pactsafeandroidsdk.R
 import com.pactsafe.pactsafeandroidsdk.util.createClickableSubStrings
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.view_acceptance_check.view.*
 
 class PSCheckBoxView(context: Context, attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
+
+    private val clickObserver = PublishSubject.create<Boolean>()
 
     init {
         View.inflate(context, R.layout.view_acceptance_check, this)
@@ -31,8 +34,17 @@ class PSCheckBoxView(context: Context, attrs: AttributeSet? = null) : LinearLayo
             }
         }
 
-        val activity = context as PSClickWrapActivity
-        checkbox.setOnCheckedChangeListener { compoundButton, isChecked ->   activity.onAcceptanceComplete(isChecked)}
+
+        checkbox.setOnCheckedChangeListener { _, isChecked ->
+            when (context) {
+                is PSClickWrapActivity -> context.onAcceptanceComplete(isChecked)
+                else -> clickObserver.onNext(isChecked)
+            }
+        }
     }
 
+    fun getCheckedSubscription() = clickObserver
+    fun setContracts(contracts: Map<String, Boolean>) {
+        TODO("Not yet implemented")
+    }
 }

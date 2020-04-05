@@ -94,7 +94,13 @@ object PSApp {
         return acceptanceLanguage + contractTitle
     }
 
-    fun getContractLinkClickedList(context: Context): List<() -> Unit> {
+    fun loadAlertMessage(): String {
+        return loadGroupData()?.alert_message ?: ""
+
+
+    }
+
+    fun getContractLinkClickedList(context: Context, contracts: Map<String, Boolean> = emptyMap()): List<() -> Unit> {
         return loadGroupData()?.let { psGroup ->
             psGroup.contract_data.values.map {
                 {
@@ -109,18 +115,22 @@ object PSApp {
         } ?: emptyList()
     }
 
-    fun getContractLinks(context: Context): List<() -> Unit> {
+    fun getContractLinks(context: Context, contracts: Map<String, Boolean> = emptyMap()): List<() -> Unit> {
         val activity = context as PSClickWrapActivity
-        return loadGroupData()?.let { psGroup ->
-            psGroup.contract_data.values.map {
-                {
-                    activity.onContractLinkClicked(
-                        it.title,
-                        "${psGroup.legal_center_url}#${it.key}"
-                    )
+
+        val contractData = loadGroupData()?.let {
+            if (contracts.isNotEmpty()) {
+                it.contract_data.filter { (key, _) ->
+                    contracts[key] == false
                 }
+            } else {
+                it.contract_data
             }
-        } ?: emptyList()
+        } ?: emptyMap()
+
+        return contractData.values.map {
+            { activity.onContractLinkClicked(it.title, "${loadGroupData()?.legal_center_url}#${it.key}") }
+        }
     }
 
     private fun setPreLoaded(psGroup: PSGroup) {

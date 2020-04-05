@@ -67,6 +67,10 @@ class SignupActivity : PSClickWrapActivity() {
     override fun onSendAgreedComplete(downloadUrl: String) {
         startActivity(Intent(this, HomeActivity::class.java))
     }
+
+    override fun onSignedStatusFetched(status: Map<String, Boolean>) {
+        TODO("Not yet implemented")
+    }
     /**/
 
 

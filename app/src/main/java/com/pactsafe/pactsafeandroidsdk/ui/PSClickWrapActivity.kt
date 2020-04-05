@@ -1,5 +1,7 @@
 package com.pactsafe.pactsafeandroidsdk.ui
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.pactsafe.pactsafeandroidsdk.PSApp
@@ -14,6 +16,7 @@ import timber.log.Timber
 abstract class PSClickWrapActivity : AppCompatActivity() {
 
     private val disposables = CompositeDisposable()
+    protected lateinit var ALERT_TYPE: ClickWrapType
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,21 +38,23 @@ abstract class PSClickWrapActivity : AppCompatActivity() {
                 Timber.e(it, "Failed to Load data.")
             }))
         }
+
+        if (intent.hasExtra(TYPE)) {
+            ALERT_TYPE = intent.extras?.get(TYPE) as ClickWrapType
+        }
     }
 
     abstract fun onPreLoaded(psGroup: PSGroup)
     abstract fun onContractLinkClicked(title: String, url: String)
     abstract fun onAcceptanceComplete(checked: Boolean)
     abstract fun onSendAgreedComplete(downloadUrl: String)
-
+    abstract fun onSignedStatusFetched(status: Map<String, Boolean>)
 
     fun fetchSignedStatus(signer: PSSignerID) {
         disposables.add(
             PSApp.fetchSignedStatus(signer)
                 .subscribe({
-                    for ((key, value) in it) {
-                        println("THESE ARE THE RESULT ${key}: $value")
-                    }
+                    onSignedStatusFetched(it)
                 }, {
                     Timber.e(it, "There was an error fetching the data. ${it.localizedMessage}")
                 })
@@ -68,9 +73,45 @@ abstract class PSClickWrapActivity : AppCompatActivity() {
 
     }
 
+    fun showTermsIntercept(type: ClickWrapType, contracts: Map<String, Boolean>, signer: PSSigner) {
+        if (type == ClickWrapType.CHECKBOX) {
+            checkboxDialogFullScreen(contracts, signer)
+        } else {
+            alertModal(contracts, signer)
+        }
+    }
+
+    private fun alertModal(contracts: Map<String, Boolean>, signer: PSSigner) {
+
+    }
+
+    private fun checkboxDialogFullScreen(contracts: Map<String, Boolean>, signer: PSSigner) {
+        val dialogFragment = PSDialogFragment(contracts)
+        val fragTran = supportFragmentManager.beginTransaction()
+
+        dialogFragment.show(fragTran, "dialog")
+    }
+
     override fun onStop() {
         super.onStop()
         disposables.clear()
         PSApp.endSubscriptions()
+    }
+
+    enum class ClickWrapType {
+        CHECKBOX,
+        ALERT
+    }
+
+    companion object {
+
+        const val TYPE = "type"
+
+        inline fun <reified T> create(context: Context, clazz: Class<T>, type: ClickWrapType) =
+            Intent(context, clazz).apply {
+                putExtra(
+                    TYPE, type
+                )
+            }
     }
 }
