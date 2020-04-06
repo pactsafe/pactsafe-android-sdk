@@ -3,9 +3,12 @@ package com.pactsafe.pactsafeandroidsdk.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.pactsafe.pactsafeandroidsdk.PSApp
+import com.pactsafe.pactsafeandroidsdk.R
 import com.pactsafe.pactsafeandroidsdk.data.ApplicationPreferences
+import com.pactsafe.pactsafeandroidsdk.models.EventType
 import com.pactsafe.pactsafeandroidsdk.models.PSGroup
 import com.pactsafe.pactsafeandroidsdk.models.PSSigner
 import com.pactsafe.pactsafeandroidsdk.models.PSSignerID
@@ -61,11 +64,13 @@ abstract class PSClickWrapActivity : AppCompatActivity() {
         )
     }
 
-    fun sendAgreed(signer: PSSigner) {
+    fun sendAgreed(signer: PSSigner, et: String) {
         disposables.add(
-            PSApp.sendAgreed(signer)
+            PSApp.sendAgreed(signer, et)
                 .subscribe({
-                    onSendAgreedComplete(it.headers()["X-Download-URL"] ?: "")
+                    if (et == EventType.AGREED) {
+                        onSendAgreedComplete(it.headers()["X-Download-URL"] ?: "")
+                    }
                 }, {
                     Timber.e("There was an error: ${it.localizedMessage}")
                 })
@@ -82,7 +87,19 @@ abstract class PSClickWrapActivity : AppCompatActivity() {
     }
 
     private fun alertModal(contracts: Map<String, Boolean>, signer: PSSigner) {
-
+        AlertDialog.Builder(this).apply {
+            setMessage(PSApp.updatedTermsLanguage(contracts))
+            setTitle("Updated Terms")
+            setPositiveButton(R.string.agreed) { di, int ->
+                sendAgreed(signer, EventType.AGREED)
+            }
+            setNegativeButton(R.string.disagreed) { di, int ->
+                sendAgreed(signer, EventType.DISAGREED)
+                di.dismiss()
+            }
+            setCancelable(false)
+        }
+            .show()
     }
 
     private fun checkboxDialogFullScreen(contracts: Map<String, Boolean>, signer: PSSigner) {

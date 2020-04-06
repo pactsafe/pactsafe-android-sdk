@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.pactsafe.pactsafeandroidsdk.PSApp
 import com.pactsafe.pactsafeandroidsdk.R
+import com.pactsafe.pactsafeandroidsdk.models.PSSigner
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
@@ -18,7 +19,7 @@ class PSDialogFragment(private val contracts: Map<String, Boolean>) : DialogFrag
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.Dialog)
+        setStyle(STYLE_NORMAL, R.style.DialogFullScreen)
         isCancelable = false
     }
 
@@ -38,7 +39,7 @@ class PSDialogFragment(private val contracts: Map<String, Boolean>) : DialogFrag
         }))
 
         submitButton.setOnClickListener {
-
+            //TODO sendAgree with signer and Event Type
         }
 
         return view

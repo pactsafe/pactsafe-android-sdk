@@ -10,30 +10,14 @@ import com.pactsafe.pactsafeandroidsdk.util.createClickableSubStrings
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.view_acceptance_check.view.*
 
-class PSCheckBoxView(context: Context, attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
+class PSCheckBoxView(context: Context, private val attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
 
     private val clickObserver = PublishSubject.create<Boolean>()
 
     init {
         View.inflate(context, R.layout.view_acceptance_check, this)
 
-        attrs?.let {
-            context.theme.obtainStyledAttributes(it, R.styleable.PSCheckBoxView, 0, 0).apply {
-                try {
-                    txt_acceptance_language.apply {
-                        text = PSApp.loadAcceptanceLanguage()
-                        createClickableSubStrings(
-                            "##",
-                            if (getBoolean(R.styleable.PSCheckBoxView_useOsBrowser, true)) PSApp.getContractLinkClickedList(context)
-                            else PSApp.getContractLinks(context)
-                        )
-                    }
-                } finally {
-                    recycle()
-                }
-            }
-        }
-
+        setContractText(attrs)
 
         checkbox.setOnCheckedChangeListener { _, isChecked ->
             when (context) {
@@ -45,6 +29,29 @@ class PSCheckBoxView(context: Context, attrs: AttributeSet? = null) : LinearLayo
 
     fun getCheckedSubscription() = clickObserver
     fun setContracts(contracts: Map<String, Boolean>) {
-        TODO("Not yet implemented")
+        setContractText(attrs, contracts)
+    }
+
+    private fun setContractText(attrs: AttributeSet?, contracts: Map<String, Boolean> = emptyMap()) {
+        attrs?.let {
+            context.theme.obtainStyledAttributes(it, R.styleable.PSCheckBoxView, 0, 0).apply {
+                try {
+                    txt_acceptance_language.apply {
+                        text = PSApp.loadAcceptanceLanguage()
+                        createClickableSubStrings(
+                            "##",
+                            if (getBoolean(
+                                    R.styleable.PSCheckBoxView_useOsBrowser,
+                                    true
+                                )
+                            ) PSApp.getContractLinkClickedList(context, contracts)
+                            else PSApp.getContractLinks(context, contracts)
+                        )
+                    }
+                } finally {
+                    recycle()
+                }
+            }
+        }
     }
 }

@@ -101,18 +101,28 @@ object PSApp {
     }
 
     fun getContractLinkClickedList(context: Context, contracts: Map<String, Boolean> = emptyMap()): List<() -> Unit> {
-        return loadGroupData()?.let { psGroup ->
-            psGroup.contract_data.values.map {
-                {
-                    context.startActivity(
-                        Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("${psGroup.legal_center_url}#${it.key}")
-                        )
-                    )
+
+        val contractData = loadGroupData()?.let {
+            if (contracts.isNotEmpty()) {
+                it.contract_data.filter { (key, _) ->
+                    contracts[key] == false
                 }
+            } else {
+                it.contract_data
             }
-        } ?: emptyList()
+        } ?: emptyMap()
+
+        return contractData.values.map {
+            {
+                context.startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("${loadGroupData()?.legal_center_url}#${it.key}")
+                    )
+                )
+            }
+        }
+
     }
 
     fun getContractLinks(context: Context, contracts: Map<String, Boolean> = emptyMap()): List<() -> Unit> {
@@ -144,16 +154,18 @@ object PSApp {
         disposables.clear()
     }
 
-    fun sendAgreed(signer: PSSigner): Single<Response<Unit>> {
+    fun sendAgreed(signer: PSSigner, et: String): Single<Response<Unit>> {
         val activityService: ActivityService = injector()
-
-        return activityService.sendActivity(signer, loadGroupData())
+        return activityService.sendActivity(signer, loadGroupData(), et)
     }
 
     fun fetchSignedStatus(signer: PSSignerID): Single<Map<String, Boolean>> {
         val activityService: ActivityService = injector()
-
         return activityService.fetchSignedStatus(signer, loadGroupData()).map { it.body() }
+    }
+
+    fun updatedTermsLanguage(contracts: Map<String, Boolean>): CharSequence? {
+        return "THIS IS THAST LANGUAGE"
     }
 }
 

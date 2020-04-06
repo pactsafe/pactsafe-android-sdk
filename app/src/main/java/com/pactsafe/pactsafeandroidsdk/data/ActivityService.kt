@@ -9,6 +9,6 @@ import retrofit2.Response
 
 interface ActivityService {
     fun preloadActivity(groupKey: String, siteAccessKey: String): Single<PSGroup>
-    fun sendActivity(signer: PSSigner, group: PSGroup?): Single<Response<Unit>>
+    fun sendActivity(signer: PSSigner, group: PSGroup?, et: String): Single<Response<Unit>>
     fun fetchSignedStatus(signer: PSSignerID, group: PSGroup?): Single<Response<Map<String, Boolean>>>
 }

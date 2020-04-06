@@ -1,7 +1,9 @@
 package com.pactsafe.demo
 
+import android.content.Intent
 import android.os.Bundle
 import com.pactsafe.pactsafeandroidsdk.models.PSGroup
+import com.pactsafe.pactsafeandroidsdk.models.PSSigner
 import com.pactsafe.pactsafeandroidsdk.ui.PSClickWrapActivity
 import kotlinx.android.synthetic.main.activity_login_alert.*
 
@@ -22,12 +24,10 @@ class LoginActivity : PSClickWrapActivity() {
 
         btn_login.setOnClickListener {
             fetchSignedStatus(edit_username.text.toString())
+            it.isEnabled = false
         }
 
         supportActionBar?.setHomeButtonEnabled(true)
-
-        println("THIS IS THE TYPE: ${intent.extras?.get(TYPE)}")
-
     }
 
     /** PS METHODS */
@@ -45,15 +45,19 @@ class LoginActivity : PSClickWrapActivity() {
     }
 
     override fun onSendAgreedComplete(downloadUrl: String) {
-        TODO("Not yet implemented")
+        startActivity(Intent(this, HomeActivity::class.java))
     }
 
     override fun onSignedStatusFetched(status: Map<String, Boolean>) {
 
         val updateSignedStatus = status.values.any { !it }
 
+        val signer = PSSigner(edit_username.text.toString())
+
         if (updateSignedStatus) {
-//            showTermsIntercept(ALERT_TYPE, status, signer)
+            showTermsIntercept(ALERT_TYPE, status, signer)
+        } else {
+            startActivity(Intent(this, HomeActivity::class.java))
         }
     }
     /**/

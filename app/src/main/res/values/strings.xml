@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PactSafe Android SDK</string>
+    <string name="agreed">Agreed</string>
+    <string name="disagreed">Disagree</string>
 </resources>

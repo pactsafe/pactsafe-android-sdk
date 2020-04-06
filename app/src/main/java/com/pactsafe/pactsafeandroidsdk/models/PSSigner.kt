@@ -7,5 +7,5 @@ typealias PSSignerID = String
 @Serializable
 data class PSSigner(
     val signerId: PSSignerID,
-    val customData: PSCustomData
+    val customData: PSCustomData = PSCustomData()
 )

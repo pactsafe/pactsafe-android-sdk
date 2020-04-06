@@ -20,14 +20,14 @@ class ActivityServiceImp(private val activityAPI: ActivityAPI) :
             .map { it.body() }
     }
 
-    override fun sendActivity(signer: PSSigner, group: PSGroup?): Single<Response<Unit>> {
+    override fun sendActivity(signer: PSSigner, group: PSGroup?, et: String): Single<Response<Unit>> {
         val applicationPreferences: ApplicationPreferences = injector()
         return activityAPI.sendActivity(
             mapOf(
                 "cid" to group?.contract_ids,
                 "vid" to group?.contract_versions,
                 "sig" to signer.signerId,
-                "et" to group?.type,
+                "et" to et,
                 "cus" to signer.customData.toString(),
                 "gid" to group?.id.toString(),
                 "cnf" to group?.confirmation_email.toString(),

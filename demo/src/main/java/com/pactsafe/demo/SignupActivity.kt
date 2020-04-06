@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import com.pactsafe.pactsafeandroidsdk.PSApp
+import com.pactsafe.pactsafeandroidsdk.models.EventType
 import com.pactsafe.pactsafeandroidsdk.models.PSCustomData
 import com.pactsafe.pactsafeandroidsdk.models.PSGroup
 import com.pactsafe.pactsafeandroidsdk.models.PSSigner
@@ -44,7 +45,7 @@ class SignupActivity : PSClickWrapActivity() {
                 PSCustomData(edit_first_name.text.toString(), edit_last_name.text.toString())
             )
 
-            sendAgreed(signer)
+            sendAgreed(signer, EventType.AGREED)
         }
     }
 
