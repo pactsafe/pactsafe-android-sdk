@@ -45,7 +45,7 @@ class LoginActivity : PSClickWrapActivity() {
     }
 
     override fun onSendAgreedComplete(downloadUrl: String) {
-        startActivity(Intent(this, HomeActivity::class.java))
+        navigateToHome()
     }
 
     override fun onSignedStatusFetched(status: Map<String, Boolean>) {
@@ -57,10 +57,15 @@ class LoginActivity : PSClickWrapActivity() {
         if (updateSignedStatus) {
             showTermsIntercept(ALERT_TYPE, status, signer)
         } else {
-            startActivity(Intent(this, HomeActivity::class.java))
+            navigateToHome()
         }
     }
     /**/
+
+    private fun navigateToHome() {
+        startActivity(Intent(this, HomeActivity::class.java))
+        finish()
+    }
 
     private fun enableLoginBtn() {
         btn_login.isEnabled = edit_username.isValidEmail() && edit_password.isValidPassword()

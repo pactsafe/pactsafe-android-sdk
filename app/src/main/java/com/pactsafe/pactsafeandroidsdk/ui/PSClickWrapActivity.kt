@@ -12,6 +12,7 @@ import com.pactsafe.pactsafeandroidsdk.models.EventType
 import com.pactsafe.pactsafeandroidsdk.models.PSGroup
 import com.pactsafe.pactsafeandroidsdk.models.PSSigner
 import com.pactsafe.pactsafeandroidsdk.models.PSSignerID
+import com.pactsafe.pactsafeandroidsdk.util.SIGNER
 import com.pactsafe.pactsafeandroidsdk.util.injector
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -90,10 +91,10 @@ abstract class PSClickWrapActivity : AppCompatActivity() {
         AlertDialog.Builder(this).apply {
             setMessage(PSApp.updatedTermsLanguage(contracts))
             setTitle("Updated Terms")
-            setPositiveButton(R.string.agreed) { di, int ->
+            setPositiveButton(R.string.agreed) { _, _ ->
                 sendAgreed(signer, EventType.AGREED)
             }
-            setNegativeButton(R.string.disagreed) { di, int ->
+            setNegativeButton(R.string.disagreed) { di, _ ->
                 sendAgreed(signer, EventType.DISAGREED)
                 di.dismiss()
             }
@@ -103,9 +104,10 @@ abstract class PSClickWrapActivity : AppCompatActivity() {
     }
 
     private fun checkboxDialogFullScreen(contracts: Map<String, Boolean>, signer: PSSigner) {
-        val dialogFragment = PSDialogFragment(contracts)
+        val dialogFragment = PSDialogFragment(contracts).apply {
+            arguments = Bundle().apply { putParcelable(SIGNER, signer) }
+        }
         val fragTran = supportFragmentManager.beginTransaction()
-
         dialogFragment.show(fragTran, "dialog")
     }
 

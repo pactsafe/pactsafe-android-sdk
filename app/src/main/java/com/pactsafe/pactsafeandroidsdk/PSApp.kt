@@ -76,19 +76,26 @@ object PSApp {
 
     fun clearPSApp() {
         val appPreferences: ApplicationPreferences = injector()
-        appPreferences.clear()
+        appPreferences.group = null
     }
 
-    fun loadGroupData(): PSGroup? {
+    private fun loadGroupData(): PSGroup? {
         val applicationPreferences: ApplicationPreferences = injector()
+        val activityService: ActivityService = injector()
+
+        if (applicationPreferences.group == null) {
+            val group = activityService.loadActivity(groupKey, siteAccessId ?: "")
+            applicationPreferences.group = group
+            return group
+        }
         return applicationPreferences.group
     }
 
     fun loadAcceptanceLanguage(): String {
         val groupData = loadGroupData()
         val acceptanceLanguage = groupData?.acceptance_language?.replace("{{contracts}}", "")
-        val contractTitle = groupData?.let { group ->
-            group.contract_data.values.joinToString(" and ") { "##${it.title}##" }
+        val contractTitle = groupData.let { group ->
+            group?.contract_data?.values?.joinToString(" and ") { "##${it.title}##" }
         }
 
         return acceptanceLanguage + contractTitle
@@ -165,7 +172,20 @@ object PSApp {
     }
 
     fun updatedTermsLanguage(contracts: Map<String, Boolean>): CharSequence? {
-        return "THIS IS THAST LANGUAGE"
+
+        val updateLanguage = "We've updated the following: "
+
+        val contractData = loadGroupData()?.let {
+            if (contracts.isNotEmpty()) {
+                it.contract_data.filter { (key, _) ->
+                    contracts[key] == false
+                }
+            } else {
+                it.contract_data
+            }
+        } ?: emptyMap()
+
+        return updateLanguage + contractData.map { it.value.title }.joinToString(",") { it }
     }
 }
 

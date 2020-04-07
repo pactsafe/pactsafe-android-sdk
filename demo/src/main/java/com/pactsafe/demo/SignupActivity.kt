@@ -3,13 +3,11 @@ package com.pactsafe.demo
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import com.pactsafe.pactsafeandroidsdk.PSApp
 import com.pactsafe.pactsafeandroidsdk.models.EventType
 import com.pactsafe.pactsafeandroidsdk.models.PSCustomData
 import com.pactsafe.pactsafeandroidsdk.models.PSGroup
 import com.pactsafe.pactsafeandroidsdk.models.PSSigner
 import com.pactsafe.pactsafeandroidsdk.ui.PSClickWrapActivity
-import com.pactsafe.pactsafeandroidsdk.util.PSResult
 import kotlinx.android.synthetic.main.activity_signup.*
 
 class SignupActivity : PSClickWrapActivity() {
@@ -66,7 +64,7 @@ class SignupActivity : PSClickWrapActivity() {
     }
 
     override fun onSendAgreedComplete(downloadUrl: String) {
-        startActivity(Intent(this, HomeActivity::class.java))
+        navigateToHome()
     }
 
     override fun onSignedStatusFetched(status: Map<String, Boolean>) {
@@ -74,6 +72,10 @@ class SignupActivity : PSClickWrapActivity() {
     }
     /**/
 
+    private fun navigateToHome() {
+        startActivity(Intent(this, HomeActivity::class.java))
+        finish()
+    }
 
     private fun enableLoginBtn() {
         btn_signup.isEnabled = edit_first_name.text?.isNotEmpty() ?: false

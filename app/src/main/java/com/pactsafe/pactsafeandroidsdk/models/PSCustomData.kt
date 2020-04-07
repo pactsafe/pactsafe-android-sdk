@@ -1,8 +1,11 @@
 package com.pactsafe.pactsafeandroidsdk.models
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import kotlinx.serialization.Serializable
 
 @Serializable
+@Parcelize
 data class PSCustomData(
     // The name of the user's iOS device (e.g., John Doe's Pixel 3 XL).
     val androidDeviceName: String = "",
@@ -14,4 +17,4 @@ data class PSCustomData(
     val companyName: String? = null,
     // Title is a reserved property for custom data in PactSafe but can be set.
     val title: String? = null
-)
+) : Parcelable

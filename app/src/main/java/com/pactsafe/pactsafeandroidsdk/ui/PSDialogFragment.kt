@@ -9,7 +9,9 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.pactsafe.pactsafeandroidsdk.PSApp
 import com.pactsafe.pactsafeandroidsdk.R
+import com.pactsafe.pactsafeandroidsdk.models.EventType
 import com.pactsafe.pactsafeandroidsdk.models.PSSigner
+import com.pactsafe.pactsafeandroidsdk.util.SIGNER
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
@@ -28,6 +30,7 @@ class PSDialogFragment(private val contracts: Map<String, Boolean>) : DialogFrag
         val alertText: TextView = view.findViewById(R.id.txt_alert_message)
         val psCheckBoxView: PSCheckBoxView = view.findViewById(R.id.ps_checkbox)
         val submitButton: Button = view.findViewById(R.id.btn_submit)
+        val signer: PSSigner? = arguments?.getParcelable(SIGNER)
 
         psCheckBoxView.setContracts(contracts)
         alertText.text = PSApp.loadAlertMessage()
@@ -39,7 +42,7 @@ class PSDialogFragment(private val contracts: Map<String, Boolean>) : DialogFrag
         }))
 
         submitButton.setOnClickListener {
-            //TODO sendAgree with signer and Event Type
+            (requireActivity() as PSClickWrapActivity).sendAgreed(signer ?: PSSigner(), EventType.AGREED)
         }
 
         return view

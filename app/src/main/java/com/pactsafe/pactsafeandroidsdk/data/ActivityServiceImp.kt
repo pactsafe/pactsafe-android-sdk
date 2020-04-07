@@ -20,6 +20,10 @@ class ActivityServiceImp(private val activityAPI: ActivityAPI) :
             .map { it.body() }
     }
 
+    override fun loadActivity(groupKey: String, siteAccessKey: String): PSGroup? {
+        return activityAPI.preload(siteAccessKey, groupKey).subscribeOn(Schedulers.io()).blockingGet().body()
+    }
+
     override fun sendActivity(signer: PSSigner, group: PSGroup?, et: String): Single<Response<Unit>> {
         val applicationPreferences: ApplicationPreferences = injector()
         return activityAPI.sendActivity(
