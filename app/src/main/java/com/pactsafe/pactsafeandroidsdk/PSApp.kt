@@ -185,7 +185,7 @@ object PSApp {
             }
         } ?: emptyMap()
 
-        return updateLanguage + contractData.map { it.value.title }.joinToString(",") { it }
+        return updateLanguage + contractData.map { it.value.title }.joinToString(", ") { it }
     }
 }
 

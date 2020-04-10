@@ -30,6 +30,8 @@ class PSDialogFragment(private val contracts: Map<String, Boolean>) : DialogFrag
         val alertText: TextView = view.findViewById(R.id.txt_alert_message)
         val psCheckBoxView: PSCheckBoxView = view.findViewById(R.id.ps_checkbox)
         val submitButton: Button = view.findViewById(R.id.btn_submit)
+        val cancelButton: TextView = view.findViewById(R.id.txt_cancel)
+
         val signer: PSSigner? = arguments?.getParcelable(SIGNER)
 
         psCheckBoxView.setContracts(contracts)
@@ -43,6 +45,10 @@ class PSDialogFragment(private val contracts: Map<String, Boolean>) : DialogFrag
 
         submitButton.setOnClickListener {
             (requireActivity() as PSClickWrapActivity).sendAgreed(signer ?: PSSigner(), EventType.AGREED)
+        }
+
+        cancelButton.setOnClickListener {
+            dismiss()
         }
 
         return view

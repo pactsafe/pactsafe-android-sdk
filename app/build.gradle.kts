@@ -62,4 +62,5 @@ dependencies {
     implementation(Dependencies.okHttpLogging)
     implementation(Dependencies.serializationRuntime)
     implementation(Dependencies.timber)
+    implementation(Dependencies.material)
 }

@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="40dp"
-        android:text="This is the alert message"
-        android:layout_weight="3"/>
+        android:layout_weight="3" />
 
     <com.pactsafe.pactsafeandroidsdk.ui.PSCheckBoxView
         android:id="@+id/ps_checkbox"
@@ -24,11 +23,20 @@
 
     <Button
         android:id="@+id/btn_submit"
-        android:layout_marginTop="20dp"
         android:layout_width="200dp"
         android:layout_height="60dp"
-        android:text="Submit"
+        android:layout_gravity="center|bottom"
+        android:layout_marginTop="20dp"
         android:enabled="false"
-        android:layout_gravity="center|bottom"/>
+        android:text="@string/submit" />
+
+    <TextView
+        android:id="@+id/txt_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:padding="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>
