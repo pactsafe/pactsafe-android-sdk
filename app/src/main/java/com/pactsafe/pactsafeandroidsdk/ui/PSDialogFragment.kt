@@ -35,7 +35,7 @@ class PSDialogFragment(private val contracts: Map<String, Boolean>) : DialogFrag
         val signer: PSSigner? = arguments?.getParcelable(SIGNER)
 
         psCheckBoxView.setContracts(contracts)
-        alertText.text = PSApp.loadAlertMessage()
+        alertText.text = PSApp.updatedTermsLanguage(contracts)
 
         compositeDisposable.add(psCheckBoxView.getCheckedSubscription().subscribe({
             submitButton.isEnabled = it

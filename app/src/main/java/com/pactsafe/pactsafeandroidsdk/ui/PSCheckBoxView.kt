@@ -29,6 +29,7 @@ class PSCheckBoxView(context: Context, private val attrs: AttributeSet? = null) 
 
     fun getCheckedSubscription() = clickObserver
     fun setContracts(contracts: Map<String, Boolean>) {
+        txt_acceptance_language.text = ""
         setContractText(attrs, contracts)
     }
 
@@ -37,7 +38,7 @@ class PSCheckBoxView(context: Context, private val attrs: AttributeSet? = null) 
             context.theme.obtainStyledAttributes(it, R.styleable.PSCheckBoxView, 0, 0).apply {
                 try {
                     txt_acceptance_language.apply {
-                        text = PSApp.loadAcceptanceLanguage()
+                        text = PSApp.loadAcceptanceLanguage(contracts)
                         createClickableSubStrings(
                             "##",
                             if (getBoolean(

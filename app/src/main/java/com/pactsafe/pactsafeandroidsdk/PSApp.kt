@@ -91,14 +91,20 @@ object PSApp {
         return applicationPreferences.group
     }
 
-    fun loadAcceptanceLanguage(): String {
+    fun loadAcceptanceLanguage(contracts: Map<String, Boolean> = emptyMap()): String {
+
         val groupData = loadGroupData()
         val acceptanceLanguage = groupData?.acceptance_language?.replace("{{contracts}}", "")
-        val contractTitle = groupData.let { group ->
-            group?.contract_data?.values?.joinToString(" and ") { "##${it.title}##" }
-        }
 
-        return acceptanceLanguage + contractTitle
+       return if(contracts.isEmpty()) {
+            acceptanceLanguage + groupData.let { group ->
+                group?.contract_data?.values?.joinToString(" and ") { "##${it.title}##" }
+            }
+        }else {
+            acceptanceLanguage + groupData?.contract_data?.filter { (key, _) ->
+                contracts[key] == false
+            }?.values?.joinToString(" and ") { "##${it.title}##" }
+        }
     }
 
     fun loadAlertMessage(): String {
