@@ -18,5 +18,4 @@ class MainApplication : Application() {
 
         PSApp.preload()
     }
-
 }

@@ -1,6 +1,7 @@
 package com.pactsafe.pactsafeandroidsdk.data
 
 import android.content.Context
+import com.google.gson.Gson
 import com.pactsafe.pactsafeandroidsdk.models.PSGroup
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
@@ -22,14 +23,14 @@ class ApplicationPreferencesImp(private val context: Context) : ApplicationPrefe
         get() {
             return try {
                 val stringValue = preferences.getString(GROUP, null) ?: return null
-                return Json(JsonConfiguration.Stable).parse(PSGroup.serializer(), stringValue)
+                return Gson().fromJson(stringValue, PSGroup::class.java)
             } catch (e: Exception) {
                 Timber.e(e, "There was an error fetching this item.")
                 null
             }
         }
         set(value) {
-            val stringValue = Json(JsonConfiguration.Stable).stringify(PSGroup.serializer(), value ?: return)
+            val stringValue = Gson().toJson(value)
             preferences.edit().putString(GROUP, stringValue).apply()
         }
     override var siteAccessId: String?

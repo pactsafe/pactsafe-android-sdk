@@ -21,13 +21,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "GROUP_KEY", "\"android-mobile-group\""
-            buildConfigField "String", "SITE_ACCESS_ID", "\"b2477dc4-3df3-416c-ac50-45abe83e444e\""
+            buildConfigField "String", "GROUP_KEY", "\"YOUR GROUP HERE\""
+            buildConfigField "String", "SITE_ACCESS_ID", "\"YOUR SITE ACCESS KEY HERE\""
         }
 
         debug {
-            buildConfigField "String", "GROUP_KEY", "\"android-mobile-group\""
-            buildConfigField "String", "SITE_ACCESS_ID", "\"b2477dc4-3df3-416c-ac50-45abe83e444e\""
+            buildConfigField "String", "GROUP_KEY", "\"YOUR GROUP HERE\""
+            buildConfigField "String", "SITE_ACCESS_ID", "\"YOUR SITE ACCESS KEY HERE\""
         }
     }
 

@@ -22,7 +22,7 @@ android {
                     "proguard-rules.pro"
                 )
                 manifestPlaceholders = mapOf("enableCrashReporting" to "false")
-                buildConfigField("String", "PS_BASE_URL", "\"https://dev.pactsafe.io\"")
+                buildConfigField("String", "PS_BASE_URL", "\"https://pactsafe.io\"")
 
             }
             getByName("debug") {
