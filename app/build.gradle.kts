@@ -5,6 +5,8 @@ plugins {
     id(BuildPlugins.serialization) version kotlinVersion
 }
 
+apply(from ="versioning.gradle.kts")
+
 android {
     compileSdkVersion(Android.compileSdkVersion)
     defaultConfig {
