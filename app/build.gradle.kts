@@ -46,6 +46,32 @@ android {
                 buildConfigField("String", "PS_BASE_URL", "\"https://dev.pactsafe.io\"")
             }
         }
+
+        afterEvaluate {
+            publishing {
+                publications {
+                    create<MavenPublication>("gpr") {
+                        run {
+                            groupId = "com.pactsafe"
+                            artifactId = "app"
+                            version = version
+                            artifact("$buildDir/outputs/aar/app-release.aar")
+                        }
+                    }
+                }
+
+                repositories {
+                    maven {
+                        name = "GitHubPackages"
+                        url = uri("https://maven.pkg.github.com/pactsafe/pactsafe-android-sdk")
+                        credentials {
+                            username = System.getenv("GITHUB_ACTOR")
+                            password = System.getenv("GITHUB_TOKEN")
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
