@@ -1,0 +1,49 @@
+name: Package Publish CI
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set Run ID
+      env: 
+        GITHUB_RUN_ID: ${{ github.run_id }}
+        GPR_TOKEN: ${{ secrets.GPR_TOKEN }}
+        GPR_USERNAME: ${{ secrets.GPR_USERNAME }}
+      run: echo ${{ secrets.GRP_USERNAME }}
+      
+    - name: Assemble the aar file
+      run: ./gradlew assemble
+
+    - name: Publish Package
+      run: ./gradlew publish
+    
+    - name: Read Properties
+      id: read_property
+      uses: christian-draeger/read-properties@1.0.1
+      with:
+        path: './version.properties'
+        property: 'version'
+    - name: Print Version
+      run: echo ${{ steps.read_property.outputs.value }}
+
+    - name: Tag Release
+      run: |
+        git config --local user.email bot@pactsafe.com
+        git config --local user.name "PactSafe Publish Action"
+        git tag ${{ steps.read_property.outputs.value }}
+        git push --tags
+    
+    - name: Increment Version Revision
+      run: ./gradlew incrementRevision
+      
+    - name: Commit changes
+      run: git commit -am "[skip ci] version revision bump"
+        
+    - name: Push Changes
+      run: git push
