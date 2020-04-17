@@ -16,7 +16,7 @@ var versionProps = Properties()
 FileInputStream(versionFile).use { stream -> versionProps.load(stream) }
 val version = versionProps["version"].toString()
 
-val envBuildNumber = System.getenv("GITHUB_RUN_ID") ?: 1
+val envBuildNumber = (System.getenv("GITHUB_RUN_ID") ?: "0").toInt()
 
 
 android {
@@ -24,7 +24,7 @@ android {
     defaultConfig {
         minSdkVersion(Android.minSdk)
         targetSdkVersion(Android.targetSdk)
-        versionCode = envBuildNumber as Int
+        versionCode = envBuildNumber
         versionName = version
         testInstrumentationRunner = TestDependencies.testInstrumentationRunner
 
