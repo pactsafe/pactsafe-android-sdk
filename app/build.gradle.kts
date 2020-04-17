@@ -1,19 +1,31 @@
-
+import java.io.FileInputStream
+import java.util.*
 
 plugins {
-    id(BuildPlugins.androidApplication)
+    id(BuildPlugins.androidLibrary)
     kotlin(BuildPlugins.kotlinAndroid)
     kotlin(BuildPlugins.kotlinAndroidExtensions)
+    `maven-publish`
 }
+
+apply(from ="versioning.gradle.kts")
+
+val versionFile = File(project.rootDir, "version.properties")
+var versionProps = Properties()
+
+FileInputStream(versionFile).use { stream -> versionProps.load(stream) }
+val version = versionProps["version"].toString()
+
+val envBuildNumber = System.getenv("GITHUB_RUN_ID") ?: 1
+
 
 android {
     compileSdkVersion(Android.compileSdkVersion)
     defaultConfig {
-        applicationId = AppInfo.identifier
         minSdkVersion(Android.minSdk)
         targetSdkVersion(Android.targetSdk)
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = envBuildNumber as Int
+        versionName = version
         testInstrumentationRunner = TestDependencies.testInstrumentationRunner
 
         buildTypes {
@@ -24,17 +36,43 @@ android {
                     "proguard-rules.pro"
                 )
                 manifestPlaceholders = mapOf("enableCrashReporting" to "false")
+                buildConfigField("String", "PS_BASE_URL", "\"https://pactsafe.io\"")
 
             }
             getByName("debug") {
                 isMinifyEnabled = false
                 isDebuggable = true
                 manifestPlaceholders = mapOf("enableCrashReporting" to "true")
+                buildConfigField("String", "PS_BASE_URL", "\"https://dev.pactsafe.io\"")
+            }
+        }
 
+        afterEvaluate {
+            publishing {
+                publications {
+                    create<MavenPublication>("gpr") {
+                        run {
+                            groupId = "com.pactsafe"
+                            artifactId = "app"
+                            version = version
+                            artifact("$buildDir/outputs/aar/app-release.aar")
+                        }
+                    }
+                }
+
+                repositories {
+                    maven {
+                        name = "GitHubPackages"
+                        url = uri("https://maven.pkg.github.com/pactsafe/pactsafe-android-sdk")
+                        credentials {
+                            username = System.getenv("GITHUB_ACTOR")
+                            password = System.getenv("GITHUB_TOKEN")
+                        }
+                    }
+                }
             }
         }
     }
-
 }
 
 dependencies {
@@ -46,4 +84,23 @@ dependencies {
     testImplementation(TestDependencies.junit)
     androidTestImplementation(TestDependencies.androidxTestRunner)
     androidTestImplementation(TestDependencies.espressoCore)
+
+    implementation(Dependencies.retrofit)
+    implementation(Dependencies.retrofitCallAdapter)
+    implementation(Dependencies.retrofitConverter)
+    implementation(Dependencies.androidCoroutines)
+    implementation(Dependencies.ktxCore)
+    implementation(Dependencies.koin)
+    implementation(Dependencies.rxJava)
+    implementation(Dependencies.rxKotlin)
+    implementation(Dependencies.rxAndroid)
+    implementation(Dependencies.coroutines)
+    implementation(Dependencies.androidCoroutines)
+    implementation(Dependencies.constraintLayout)
+    implementation(Dependencies.gson)
+    implementation(Dependencies.okHttp)
+    implementation(Dependencies.okHttpLogging)
+    implementation(Dependencies.serializationRuntime)
+    implementation(Dependencies.timber)
+    implementation(Dependencies.material)
 }

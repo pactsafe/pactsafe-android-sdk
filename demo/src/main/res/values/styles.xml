@@ -1,0 +1,35 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="materialButtonStyle">@style/Button.StyleOne</item>
+    </style>
+
+    <style name="Button" />
+
+    <style name="Button.StyleOne" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">0dp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Button.StyleTwo">
+        <item name="cornerRadius">10dp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="Text" />
+
+    <style name="Text.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@android:color/white</item>
+    </style>
+
+    <style name="Text.EditText">
+        <item name="android:maxLines">1</item>
+        <item name="maxCharacterCount">40</item>
+    </style>
+
+</resources>
