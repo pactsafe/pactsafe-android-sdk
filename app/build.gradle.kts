@@ -1,19 +1,31 @@
+import java.io.FileInputStream
+import java.util.*
+
 plugins {
     id(BuildPlugins.androidLibrary)
     kotlin(BuildPlugins.kotlinAndroid)
     kotlin(BuildPlugins.kotlinAndroidExtensions)
-    id(BuildPlugins.serialization) version kotlinVersion
+    `maven-publish`
 }
 
 apply(from ="versioning.gradle.kts")
+
+val versionFile = File(project.rootDir, "version.properties")
+var versionProps = Properties()
+
+FileInputStream(versionFile).use { stream -> versionProps.load(stream) }
+val version = versionProps["version"].toString()
+
+val envBuildNumber = System.getenv("GITHUB_RUN_ID") ?: 1
+
 
 android {
     compileSdkVersion(Android.compileSdkVersion)
     defaultConfig {
         minSdkVersion(Android.minSdk)
         targetSdkVersion(Android.targetSdk)
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = envBuildNumber as Int
+        versionName = version
         testInstrumentationRunner = TestDependencies.testInstrumentationRunner
 
         buildTypes {
