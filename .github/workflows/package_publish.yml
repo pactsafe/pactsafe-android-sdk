@@ -11,11 +11,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set Run ID
-      env: 
-        GITHUB_RUN_ID: ${{ github.run_id }}
-        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-        BOT_USERNAME: ${{ secrets.BOT_USERNAME }}
-      run: echo ${{ secrets.BOT_USERNAME }}
+      run: |
+        echo ::set-env name=BOT_USERNAME::${ secrets.BOT_TOKEN }
+        echo ::set-env name=BOT_TOKEN::${ secrets.BOT_USERNAME }
+        echo ::set-env name=GITHUB_RUN_ID::${ github.run_id }
+      run: echo $GITHUB_RUN_ID
+
       
     - name: Assemble the aar file
       run: ./gradlew assemble
