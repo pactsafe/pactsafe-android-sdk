@@ -14,7 +14,7 @@ val versionFile = File(project.rootDir, "version.properties")
 var versionProps = Properties()
 
 FileInputStream(versionFile).use { stream -> versionProps.load(stream) }
-val version = versionProps["version"].toString()
+val versionNumber = versionProps["version"].toString()
 
 val envBuildNumber = (System.getenv("GITHUB_RUN_ID") ?: "0").toInt()
 
@@ -25,7 +25,7 @@ android {
         minSdkVersion(Android.minSdk)
         targetSdkVersion(Android.targetSdk)
         versionCode = envBuildNumber
-        versionName = version
+        versionName = versionNumber
         testInstrumentationRunner = TestDependencies.testInstrumentationRunner
 
         buildTypes {
@@ -50,7 +50,7 @@ android {
         afterEvaluate {
             publishing {
                 publications {
-                    create<MavenPublication>("bar") {
+                    create<MavenPublication>("aar") {
                         run {
                             groupId = "com.pactsafe"
                             artifactId = "androidsdk"
@@ -65,8 +65,8 @@ android {
                         name = "GitHubPackages"
                         url = uri("https://maven.pkg.github.com/pactsafe/pactsafe-android-sdk")
                         credentials {
-                            username = System.getenv("GITHUB_ACTOR")
-                            password = System.getenv("GITHUB_TOKEN")
+                            username = System.getenv("BOT_USERNAME")
+                            password = System.getenv("BOT_TOKEN")
                         }
                     }
                 }
