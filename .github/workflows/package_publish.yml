@@ -13,8 +13,8 @@ jobs:
     - name: Set Run ID
       env: 
         GITHUB_RUN_ID: ${{ github.run_id }}
-        BOT_TOKEN: ${{ secrets.GPR_TOKEN }}
-        BOT_USERNAME: ${{ secrets.BOT_TOKEN }}
+        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        BOT_USERNAME: ${{ secrets.BOT_USERNAME }}
       run: echo ${{ secrets.BOT_USERNAME }}
       
     - name: Assemble the aar file
