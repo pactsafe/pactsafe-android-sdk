@@ -50,7 +50,7 @@ android {
         afterEvaluate {
             publishing {
                 publications {
-                    create<MavenPublication>("aar") {
+                    create<MavenPublication>("bar") {
                         run {
                             groupId = "com.pactsafe"
                             artifactId = "androidsdk"
