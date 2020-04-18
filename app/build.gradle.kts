@@ -53,7 +53,7 @@ android {
                     create<MavenPublication>("bar") {
                         run {
                             groupId = "com.pactsafe"
-                            artifactId = "app"
+                            artifactId = "androidsdk"
                             version = version
                             artifact("$buildDir/outputs/aar/app-release.aar")
                         }
