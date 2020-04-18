@@ -50,10 +50,10 @@ android {
         afterEvaluate {
             publishing {
                 publications {
-                    create<MavenPublication>("gpr") {
+                    create<MavenPublication>("bar") {
                         run {
                             groupId = "com.pactsafe"
-                            artifactId = "app"
+                            artifactId = "androidsdk"
                             version = version
                             artifact("$buildDir/outputs/aar/app-release.aar")
                         }
