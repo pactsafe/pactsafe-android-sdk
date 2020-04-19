@@ -5,8 +5,8 @@
 - [Installation](#installation)
 - [Configure and Initalize the PactSafe SDK](#configure-and-initalize-the-pactsafe-sdk)
     - [Preloading Clickwrap Data](#preloading-clickwrap-data)
-- [PSClickWrapView](#psclickwrapview)
-    - [Layout](#layout)
+- [PSClickWrapActivity](#psclickwrapactivity)
+    - [Starting a Clickwrap Activity](#starting-a-click-wrap-activity)
     - [Configure Contracts Link Behavior](#configure-contracts-link-tap-behavior)
     - [Check if Checkbox is Selected](#check-if-checkbox-is-selected)
 	- [Sending Acceptance](#sending-acceptance)
@@ -53,7 +53,7 @@ PSApp.init(
 ```
 ### Preloading Clickwrap Data
 
-Since your `PSClickWrapView` class will load contracts for the specified PactSafe group, you may want to preload the data using your group key before displaying the clickwrap. By preloading, a user will be less likely see loading when they get to the screen that contains the PSClickWrapActivity.
+Since your `PSClickWrapActivity` class will load contracts for the specified PactSafe group, you may want to preload the data using your group key before displaying the clickwrap. By preloading, a user will be less likely see loading when they get to the screen that contains the `PSClickWrapActivity`.
 
 To preload your PactSafe group data, you can use the `preload` method on the PSApp object within your `MainApplication`. Example below:
 
@@ -85,9 +85,9 @@ Before you start to implement, you may want to become familiar with a few data t
 | PSContract       | `PSContract` is an object that holds information about contracts within a PactSafe `PSGroup`. |
 | PSConnectionData | The `PSConnectionData` object [Customizing Acceptance Data](#customizing-acceptance-data) section. |
 
-## PSClickWrapView
+## PSClickWrapActivity
 
-The easiest way of getting started with using the PactSafe clickwrap is by utilizing our PSClickWrapActivity class to dynamically load your contracts into a Layout. The PSClickWrapActivity class extends AppCompatActivity, which allows you to easily customize and format the clickwrap as needed.
+The easiest way of getting started with using the PactSafe clickwrap is by utilizing our `PSClickWrapActivity` class to dynamically load your contracts into a Layout. The `PSClickWrapActivity` class extends AppCompatActivity, which allows you to easily customize and format the clickwrap as needed.
 
 ```kotlin
 class YourActivity: PSClickWrapActivity() {}
@@ -105,10 +105,28 @@ override fun onSendAgreedComplete(downloadUrl: String) {}
 
 override fun onSignedStatusFetched(status: Map<String, Boolean>) {}
 ```
+### Starting a Clickwrap activity
+There are twp type of click wraps available from the SDK: 
+1. Checkbox Acceptance
+2. Alert Modal Acceptance
 
-### Preloading Clickwrap Data
+`PSClickWrapActivity` provides and easy way to create either. 
+`PSClickWrapActivity.create()` accepts, along with `Context` and `Class<T>`, `ClickWrapType`. Choose from `CHECKBOX` or `ALERT`.
 
-### Loading Your Clickwrap
+From your calling activity start a activity like so: 
+
+```kotlin
+startActivity(
+    PSClickWrapActivity.create(
+                    this,
+                    YourClickwrapActivity::class.java,
+                    PSClickWrapActivity.ClickWrapType.CHECKBOX
+                )
+)
+```
+
+### Interacting with Your Clickwrap
+
 
 
 #### Configure Contracts Link Tap Behavior
