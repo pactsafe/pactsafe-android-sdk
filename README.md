@@ -1,8 +1,8 @@
 # PactSafe Android SDK
 
 - [Requirements](#requirements)
-- [Installation](#installation)
 - [Notes Before Getting Started](#notes-before-getting-started)
+- [Installation](#installation)
 - [Configure and Initalize the PactSafe SDK](#configure-and-initalize-the-pactsafe-sdk)
 - [PSClickWrapView](#psclickwrapview)
 	- [Preloading Clickwrap Data](#preloading-clickwrap-data)
@@ -20,7 +20,6 @@
 	- [Custom Data](#custom-data)
 
 
-
 ## Requirements
 
 - Android Min SDK 22
@@ -29,17 +28,34 @@
 - PactSafe Site Access ID
 - PactSafe API Access
 
-## Installation
-Add the following to your `build.app` gradle file. 
-```kotlin
-implementation("com.pactsafe.androidsdk:{Version})
-```
-
 ## Notes Before Getting Started
+Both the sdk and Demo app are written in Kotlin
 
 ### Demo Android App
+As you follow along in this guide, you may want to look at the PactSafe Android Demo App as an example.
+
+## Installation
+Add the following dependency to your `build.app` gradle file. 
+```kotlin
+implementation("com.pactsafe.androidsdk:{Version}")
+```
+## Configure and Initalize the PactSafe SDK
+It is recommended that you initialize the sdk in the `onCreate` in your `MainApplication` class. Your call might look something like this: 
+
+```
+PSApp.init(
+            BuildConfig.SITE_ACCESS_ID,
+            BuildConfig.GROUP_KEY,
+            this,
+            debug = true,
+            testData = true
+        )
+```
+
+*Note that the `debug` and `testData` flags are defaulted to `false`.
 
 ### Debug Mode
+Something not quite working the way you expect or you need additional information as to what might not be working? No problem. Simply enable the `debugMode` property on `PSApp.shared`.
 
 ### Test Mode
 Optionally, set `testMode` to true as you are testing your implementation. This allows you to delete test data in your PactSafe site.
@@ -58,8 +74,6 @@ Before you start to implement, you may want to become familiar with a few data t
 | PSGroup          | `PSGroup` is a struct that holds information about a speciifc group (uses PactSafe group key) that is loaded from the PactSafe API. |
 | PSContract       | `PSContract` is a struct that holds information about contracts within a PactSafe `PSGroup`. |
 | PSConnectionData | The `PSConnectionData` struct [Customizing Acceptance Data](#customizing-acceptance-data) section. |
-
-## Configure and Initalize the PactSafe SDK
 
 ## PSClickWrapView
 
