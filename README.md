@@ -4,8 +4,8 @@
 - [Notes Before Getting Started](#notes-before-getting-started)
 - [Installation](#installation)
 - [Configure and Initalize the PactSafe SDK](#configure-and-initalize-the-pactsafe-sdk)
+    - [Preloading Clickwrap Data](#preloading-clickwrap-data)
 - [PSClickWrapView](#psclickwrapview)
-	- [Preloading Clickwrap Data](#preloading-clickwrap-data)
     - [Layout](#layout)
     - [Configure Contracts Link Behavior](#configure-contracts-link-tap-behavior)
     - [Check if Checkbox is Selected](#check-if-checkbox-is-selected)
@@ -29,7 +29,7 @@
 - PactSafe API Access
 
 ## Notes Before Getting Started
-Both the sdk and Demo app are written in Kotlin
+Both the SDK and Demo app are written in Kotlin
 
 ### Demo Android App
 As you follow along in this guide, you may want to look at the PactSafe Android Demo App as an example.
@@ -44,18 +44,28 @@ It is recommended that you initialize the sdk in the `onCreate` in your `MainApp
 
 ```kotlin
 PSApp.init(
-            <Site Access ID>,
-            <Group Key>,
+            "Site Access ID",
+            "Group Key",
             this,
             debug = true,
             testData = true
         )
 ```
+### Preloading Clickwrap Data
 
-*Note that the `debug` and `testData` flags are defaulted to `false`.
+Since your `PSClickWrapView` class will load contracts for the specified PactSafe group, you may want to preload the data using your group key before displaying the clickwrap. By preloading, a user will be less likely see loading when they get to the screen that contains the PSClickWrapActivity.
+
+To preload your PactSafe group data, you can use the `preload` method on the PSApp object within your `MainApplication`. Example below:
+
+```kotlin
+PSApp.preload()
+```
+This will fetch group data and cache it for later use.
+
+Note: The `debug` and `testData` flags are defaulted to `false`.
 
 ### Debug Mode
-Something not quite working the way you expect or you need additional information as to what might not be working? No problem. Setting the `debug` flag to true will display additional information.
+Setting the `debug` flag to true will display additional information in your console.
 
 ### Test Mode
 Optionally, set `testMode` to true as you are testing your implementation. This allows you to delete test data in your PactSafe site.
