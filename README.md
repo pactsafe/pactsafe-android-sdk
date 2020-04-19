@@ -42,7 +42,7 @@ implementation("com.pactsafe.androidsdk:{Version}")
 ## Configure and Initalize the PactSafe SDK
 It is recommended that you initialize the sdk in the `onCreate` in your `MainApplication` class. Your call might look something like this: 
 
-```
+```kotlin
 PSApp.init(
             BuildConfig.SITE_ACCESS_ID,
             BuildConfig.GROUP_KEY,
@@ -55,12 +55,12 @@ PSApp.init(
 *Note that the `debug` and `testData` flags are defaulted to `false`.
 
 ### Debug Mode
-Something not quite working the way you expect or you need additional information as to what might not be working? No problem. Simply enable the `debugMode` property on `PSApp.shared`.
+Something not quite working the way you expect or you need additional information as to what might not be working? No problem. Setting the `debug` flag to true will display additional information.
 
 ### Test Mode
 Optionally, set `testMode` to true as you are testing your implementation. This allows you to delete test data in your PactSafe site.
 
-Note: Don't forget to remove this line before you are finished!
+Note: Don't forget to turn `testMode` off before you are finished!
 
 ### Data Types
 
