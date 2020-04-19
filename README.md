@@ -31,8 +31,9 @@
 
 ## Installation
 Add the following to your `build.app` gradle file. 
-```
+```kotlin
 implementation("com.pactsafe.androidsdk:{Version})
+```
 
 ## Notes Before Getting Started
 
