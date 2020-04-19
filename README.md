@@ -44,8 +44,8 @@ It is recommended that you initialize the sdk in the `onCreate` in your `MainApp
 
 ```kotlin
 PSApp.init(
-            BuildConfig.SITE_ACCESS_ID,
-            BuildConfig.GROUP_KEY,
+            <Site Access ID>,
+            <Group Key>,
             this,
             debug = true,
             testData = true
@@ -64,18 +64,37 @@ Note: Don't forget to turn `testMode` off before you are finished!
 
 ### Data Types
 
-Before you start to implement, you may want to become familiar with a few data types used by the iOS SDK.
+Before you start to implement, you may want to become familiar with a few data types used by the Android SDK.
 
 | Name             | Description                                                  |
 | ---------------- | ------------------------------------------------------------ |
 | PSSignerID       | `PSSignerID` is a typealias for a String.                    |
-| PSSigner         | `PSSigner` is a struct that you'll use to send over your signer information. You must include a `signerId`, which is a `PSSignerID` or String that holds your unique signer ID that PactSafe holds. You can optionally pass over additional custom data with a `PSCustomData` struct, which is covered below. |
+| PSSigner         | `PSSigner` is an object that you'll use to send over your signer information. You must include a `signerId`, which is a `PSSignerID` or String that holds your unique signer ID that PactSafe holds. You can optionally pass over additional custom data with a `PSCustomData` object, which is covered below. |
 | PSCustomData     | `PSCustomData` holds additional information about your signer and can be customized. Please see the properties that are available to be set in the [Customizing Acceptance Data](#customizing-acceptance-data) section. |
-| PSGroup          | `PSGroup` is a struct that holds information about a speciifc group (uses PactSafe group key) that is loaded from the PactSafe API. |
-| PSContract       | `PSContract` is a struct that holds information about contracts within a PactSafe `PSGroup`. |
-| PSConnectionData | The `PSConnectionData` struct [Customizing Acceptance Data](#customizing-acceptance-data) section. |
+| PSGroup          | `PSGroup` is an object that holds information about a speciifc group (uses PactSafe group key) that is loaded from the PactSafe API. |
+| PSContract       | `PSContract` is an object that holds information about contracts within a PactSafe `PSGroup`. |
+| PSConnectionData | The `PSConnectionData` object [Customizing Acceptance Data](#customizing-acceptance-data) section. |
 
 ## PSClickWrapView
+
+The easiest way of getting started with using the PactSafe clickwrap is by utilizing our PSClickWrapActivity class to dynamically load your contracts into a Layout. The PSClickWrapActivity class extends AppCompatActivity, which allows you to easily customize and format the clickwrap as needed.
+
+```kotlin
+class YourActivity: PSClickWrapActivity() {}
+```
+`PSClickWrapActivity` requires implementation of the following methods: 
+
+```kotlin 
+override fun onPreLoaded(psGroup: PSGroup) {}
+
+override fun onContractLinkClicked(title: String, url: String) {}
+
+override fun onAcceptanceComplete(checked: Boolean) {}
+
+override fun onSendAgreedComplete(downloadUrl: String) {}
+
+override fun onSignedStatusFetched(status: Map<String, Boolean>) {}
+```
 
 ### Preloading Clickwrap Data
 
