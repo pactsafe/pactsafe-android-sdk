@@ -92,28 +92,16 @@ The easiest way of getting started with using the PactSafe clickwrap is by utili
 ```kotlin
 class YourActivity: PSClickWrapActivity() {}
 ```
-`PSClickWrapActivity` requires implementation of the following methods: 
 
-```kotlin 
-override fun onPreLoaded(psGroup: PSGroup) {}
-
-override fun onContractLinkClicked(title: String, url: String) {}
-
-override fun onAcceptanceComplete(checked: Boolean) {}
-
-override fun onSendAgreedComplete(downloadUrl: String) {}
-
-override fun onSignedStatusFetched(status: Map<String, Boolean>) {}
-```
 ### Starting a Clickwrap activity
-There are twp type of click wraps available from the SDK: 
+There are two types of clickwraps available from the SDK: 
 1. Checkbox Acceptance
 2. Alert Modal Acceptance
 
 `PSClickWrapActivity` provides and easy way to create either. 
 `PSClickWrapActivity.create()` accepts, along with `Context` and `Class<T>`, `ClickWrapType`. Choose from `CHECKBOX` or `ALERT`.
 
-From your calling activity start a activity like so: 
+You may start an activity like so: 
 
 ```kotlin
 startActivity(
@@ -127,6 +115,19 @@ startActivity(
 
 ### Interacting with Your Clickwrap
 
+`PSClickWrapActivity` requires implementation of the following methods: 
+
+```kotlin 
+override fun onPreLoaded(psGroup: PSGroup) {}
+
+override fun onContractLinkClicked(title: String, url: String) {}
+
+override fun onAcceptanceComplete(checked: Boolean) {}
+
+override fun onSendAgreedComplete(downloadUrl: String) {}
+
+override fun onSignedStatusFetched(status: Map<String, Boolean>) {}
+```
 
 
 #### Configure Contracts Link Tap Behavior
