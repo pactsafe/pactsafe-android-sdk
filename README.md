@@ -1,4 +1,4 @@
-# pactsafe-android-sdk
+# PactSafe Android SDK
 
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -30,6 +30,9 @@
 - PactSafe API Access
 
 ## Installation
+Add the following to your `build.app` gradle file. 
+```
+implementation("com.pactsafe.androidsdk:{Version})
 
 ## Notes Before Getting Started
 
@@ -108,7 +111,7 @@ Before sending an activity event, you may want to customize properties on `PSCus
 
 | Property        | Description                                                  | Overridable |
 | --------------- | ------------------------------------------------------------ | ----------- |
-| `iosDeviceName` | The name of the user's iOS device (e.g., John Doe's iPhone 8). | No          |
+| `androidDeviceName` | The name of the user's Android device (e.g., John Doe's Pixel XL). | No          |
 | `firstName`     | First Name is a reserved property for custom data in PactSafe but can be set. | Yes         |
 | `lastName`      | Last Name is a reserved property for custom data in PactSafe but can be set. | Yes         |
 | `companyName`   | Company Name is a reserved property for custom data in PactSafe but can be set. | Yes         |
