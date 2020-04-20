@@ -53,7 +53,7 @@ android {
                     register("gprRelease", MavenPublication::class){
                             groupId = "com.pactsafe"
                             artifactId = "androidsdk"
-                            version = version
+                            version = versionNumber
                             artifact("$buildDir/outputs/aar/app-release.aar")
                     }
                 }
