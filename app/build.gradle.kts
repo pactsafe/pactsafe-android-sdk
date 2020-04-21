@@ -63,8 +63,8 @@ android {
                         name = "GitHubPackages"
                         url = uri("https://maven.pkg.github.com/pactsafe/pactsafe-android-sdk")
                         credentials {
-                            username = System.getenv("BOT_USERNAME")
-                            password = System.getenv("BOT_TOKEN")
+                            username = "pactsafe-bot"//System.getenv("BOT_USERNAME")
+                            password = "6fcb69a04369ec0021f2fe14130ceb629e061db5"//System.getenv("BOT_TOKEN")
                         }
                     }
                 }
