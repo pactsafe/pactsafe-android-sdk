@@ -23,7 +23,7 @@ fun incrementMajorVersion() {
     val versionFile = File(project.rootDir, "version.properties")
     val version = readVersion()
 
-    var major = (version["major"] ?: 0) as Int
+    var major = (properties["major"] ?: 0) as Int
     major++
 
     version.setProperty("major", major.toString())
@@ -42,7 +42,7 @@ fun incrementMinorVersion() {
     val versionFile = File(project.rootDir, "version.properties")
     val version = readVersion()
 
-    var minor = (version["minor"] ?: 0) as Int
+    var minor = (properties["minor"] ?: 0) as Int
     minor++
 
     version.setProperty("minor", minor.toString())
@@ -61,7 +61,7 @@ fun incrementRevisionVersion() {
     val versionFile = File(project.rootDir, "version.properties")
     val version = readVersion()
 
-    var revision = (version["revision"] ?: 0) as Int
+    var revision = (properties["revision"] ?: 0) as Int
     revision++
 
     version.setProperty("revision", revision.toString())
