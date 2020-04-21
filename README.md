@@ -1,3 +1,4 @@
+![Package Publish CI](https://github.com/pactsafe/pactsafe-android-sdk/workflows/Package%20Publish%20CI/badge.svg)
 # PactSafe Android SDK
 
 - [Requirements](#requirements)
@@ -36,7 +37,7 @@ As you follow along in this guide, you may want to look at the PactSafe Android 
 
 ## Installation
 
-First, aurthorize your app to use GitHub Packages. [GitHub Packages Authorization](#https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-gradle-for-use-with-github-packages)
+First, aurthorize your app to use GitHub Packages: [GitHub Packages Authorization](https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-gradle-for-use-with-github-packages)
 
 Add the following dependency to your `build.app` gradle file. 
 ```kotlin
@@ -147,13 +148,51 @@ If you wish the contract links to use your OS's native browser when tapped, just
 
 When using the `CHECKBOX` Clickwrap, you can set this preference directly on the Activity by calling the `setUsesOSBrowser(Boolean)` function.
 
+If you use the default link tap setting, you will be handed a url in the `onContractLinkClicked` function.  Your implementation may look someting like: 
+```kotlin
+override fun onContractLinkClicked(title: String, url: String) {
+        loadWebView(title, url)
+}
+```
+
 #### Check if Checkbox is Selected
+
+When your users tick the checkbox, you will be alerted via the `onAcceptanceComplete` function. Here you might enable a submit button or something similar so that you can send acceptance assured that the box has been ticked.
+
+```kotlin
+override fun onAcceptanceComplete(checked: Boolean) {
+        btn_login.isEnabled = checked
+}
+```
+
 
 #### Sending Acceptance
 
+If you're using the `PSCheckBoxView` directly in your PS create a `PSSigner` object and include any custom data you wish. When you're ready, invoke the `sendAgreed` method available on the Activity. It will require a `PSSigner` object and an `EventType`
+```kotlin
+btn_signup.setOnClickListener {
+
+            it.isEnabled = false
+
+            val signer = PSSigner(
+                edit_email.text.toString(),
+                PSCustomData(edit_first_name.text.toString(), edit_last_name.text.toString())
+            )
+
+            sendAgreed(signer, EventType.AGREED)
+        }
+```
+Once the acceptance has been submitted successfully, you will be notified via `onSendAgreedComplete`.
+
+```kotlin
+override fun onSendAgreedComplete(downloadUrl: String) {
+        navigateToHome()
+}
+```
 ## Checking Acceptance
 
 ##### Receive Notice of Acceptance
+
 
 ### Using signedStatus Method and Present Alert
 
