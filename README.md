@@ -12,9 +12,7 @@
     - [Check if Checkbox is Selected](#check-if-checkbox-is-selected)
 	- [Sending Acceptance](#sending-acceptance)
 - [Checking Acceptance](#checking-acceptance)
-	- [Using the signedStatus Method](#using-the-signedstatus-method)
-	- [Using the PSAcceptanceViewController](#using-the-psacceptanceviewcontroller)
-	- [Using signedStatus Method and Present Alert](#using-signedstatus-method-and-present-alert)
+	
 - [Sending Activity Manually](#sending-activity-manually)
 - [Customizing Acceptance Data](#customizing-acceptance-data)
 	- [Connection Data](#connection-data)
@@ -190,16 +188,28 @@ override fun onSendAgreedComplete(downloadUrl: String) {
 }
 ```
 ## Checking Acceptance
-
 ##### Receive Notice of Acceptance
+In order to determine if a user has accepted all of the latest contract language, you may invoke the `fetchSignedStatus` method on the Activity. This will return a `Map<String, Boolean>` called `status` for any contracts that need accepted. You'll need to see if there any in the list that require attention. If so, you must create a `PSSigner` object using the `username` and pass it to `showTermsIntercept` on the Activity.  An easy way to do so is: 
+```kotlin
+override fun onSignedStatusFetched(status: Map<String, Boolean>) {
 
+        val updateSignedStatus = status.values.any { !it }
 
-### Using signedStatus Method and Present Alert
+        val signer = PSSigner(edit_username.text.toString())
+
+        if (updateSignedStatus) {
+            showTermsIntercept(ALERT_TYPE, status, signer)
+        } else {
+            navigateToHome()
+        }
+}
+```
+Note: `ALERT_TYPE` is set `onCreate` for the parent activity and may be accessed here. Depending on the type of activity you've created, it will indicate to PSClickWrapActivity how to behave.
 
 ## Sending Activity Manually
+In the occurence that you would need to send an Activity Manually, you may simply invoke `PSApp.sendActivity` directly. This call will return a `Single<Boolean>` observable.  If you don't already, in this case, you will need to implement RXJava/RxAndroid
 
 ## Customizing Acceptance Data
-
 ### Connection Data
 Below, you'll find information on what to expect the SDK to send over as part of the activity event as "Connection Data", which is viewable within a PactSafe activity record. Many of the properties are set upon initialization except the optional properties (marked as optional below) using the following Apple APIs: `UIDevice`, `Locale`, and `TimeZone`. If you need further information about these properties, please reach out to us directly.
 

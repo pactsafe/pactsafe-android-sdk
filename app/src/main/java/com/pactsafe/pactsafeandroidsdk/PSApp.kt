@@ -96,11 +96,11 @@ object PSApp {
         val groupData = loadGroupData()
         val acceptanceLanguage = groupData?.acceptance_language?.replace("{{contracts}}", "")
 
-       return if(contracts.isEmpty()) {
+        return if (contracts.isEmpty()) {
             acceptanceLanguage + groupData.let { group ->
                 group?.contract_data?.values?.joinToString(" and ") { "##${it.title}##" }
             }
-        }else {
+        } else {
             acceptanceLanguage + groupData?.contract_data?.filter { (key, _) ->
                 contracts[key] == false
             }?.values?.joinToString(" and ") { "##${it.title}##" }
@@ -109,8 +109,6 @@ object PSApp {
 
     fun loadAlertMessage(): String {
         return loadGroupData()?.alert_message ?: ""
-
-
     }
 
     fun getContractLinkClickedList(context: Context, contracts: Map<String, Boolean> = emptyMap()): List<() -> Unit> {
@@ -135,7 +133,6 @@ object PSApp {
                 )
             }
         }
-
     }
 
     fun getContractLinks(context: Context, contracts: Map<String, Boolean> = emptyMap()): List<() -> Unit> {
@@ -170,6 +167,12 @@ object PSApp {
     fun sendAgreed(signer: PSSigner, et: String): Single<Response<Unit>> {
         val activityService: ActivityService = injector()
         return activityService.sendActivity(signer, loadGroupData(), et)
+    }
+
+    fun sendActivity(signer: PSSigner, et: String): Single<Boolean> {
+        val activityService: ActivityService = injector()
+        return activityService.sendActivity(signer, loadGroupData(), et)
+            .map { it.isSuccessful }
     }
 
     fun fetchSignedStatus(signer: PSSignerID): Single<Map<String, Boolean>> {
