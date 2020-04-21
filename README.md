@@ -35,6 +35,9 @@ Both the SDK and Demo app are written in Kotlin
 As you follow along in this guide, you may want to look at the PactSafe Android Demo App as an example.
 
 ## Installation
+
+First, aurthorize your app to use GitHub Packages. [GitHub Packages Authorization](#https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-gradle-for-use-with-github-packages)
+
 Add the following dependency to your `build.app` gradle file. 
 ```kotlin
 implementation("com.pactsafe.androidsdk:{Version}")
@@ -131,6 +134,18 @@ override fun onSignedStatusFetched(status: Map<String, Boolean>) {}
 
 
 #### Configure Contracts Link Tap Behavior
+
+When building an acceptance view for your users to create a user, for instance, you can utilalize `PSCheckBoxView` in your layout as so: 
+
+```xml
+<com.pactsafe.pactsafeandroidsdk.ui.PSCheckBoxView
+            android:id="@+id/ps_checkbox_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+```
+If you wish the contract links to use your OS's native browser when tapped, just set the `useOSBrowser` attribute to `true`.  It defaults to false.
+
+When using the `CHECKBOX` Clickwrap, you can set this preference directly on the Activity by calling the `setUsesOSBrowser(Boolean)` function.
 
 #### Check if Checkbox is Selected
 
