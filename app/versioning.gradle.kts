@@ -16,14 +16,14 @@ fun readVersion(): Properties {
 
 fun readVersionActual() {
     val version = readVersion()
-    println("VERSION: ${version["version"]}")
+    println("VERSION: ${version.getProperty("version")}")
 }
 
 fun incrementMajorVersion() {
     val versionFile = File(project.rootDir, "version.properties")
     val version = readVersion()
 
-    var major = (properties["major"] ?: 0) as Int
+    var major = version.getProperty("major").toInt()
     major++
 
     version.setProperty("major", major.toString())
@@ -42,7 +42,7 @@ fun incrementMinorVersion() {
     val versionFile = File(project.rootDir, "version.properties")
     val version = readVersion()
 
-    var minor = (properties["minor"] ?: 0) as Int
+    var minor = version.getProperty("minor").toInt()
     minor++
 
     version.setProperty("minor", minor.toString())
@@ -61,7 +61,7 @@ fun incrementRevisionVersion() {
     val versionFile = File(project.rootDir, "version.properties")
     val version = readVersion()
 
-    var revision = (properties["revision"] ?: 0) as Int
+    var revision = version.getProperty("revision").toInt()
     revision++
 
     version.setProperty("revision", revision.toString())
@@ -72,7 +72,7 @@ fun incrementRevisionVersion() {
         version.store(stream, null)
     }
 
-    println("Major Version has been updated to: ${version["version"]}")
+    println("Revision Version has been updated to: ${version["version"]}")
 }
 
 tasks.register("incrementMajorVersion") {
