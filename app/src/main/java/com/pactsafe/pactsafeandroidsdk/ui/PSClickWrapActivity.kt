@@ -21,6 +21,7 @@ abstract class PSClickWrapActivity : AppCompatActivity() {
 
     private val disposables = CompositeDisposable()
     protected lateinit var ALERT_TYPE: ClickWrapType
+    private var useOSBrowser: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +80,10 @@ abstract class PSClickWrapActivity : AppCompatActivity() {
 
     }
 
+    fun setUsesOSBrowser(useBrowser: Boolean) {
+        useOSBrowser = useBrowser
+    }
+
     fun showTermsIntercept(type: ClickWrapType, contracts: Map<String, Boolean>, signer: PSSigner) {
         if (type == ClickWrapType.CHECKBOX) {
             checkboxDialogFullScreen(contracts, signer)
@@ -104,7 +109,7 @@ abstract class PSClickWrapActivity : AppCompatActivity() {
     }
 
     private fun checkboxDialogFullScreen(contracts: Map<String, Boolean>, signer: PSSigner) {
-        val dialogFragment = PSDialogFragment(contracts).apply {
+        val dialogFragment = PSDialogFragment(contracts, useOSBrowser).apply {
             arguments = Bundle().apply { putParcelable(SIGNER, signer) }
         }
         val fragTran = supportFragmentManager.beginTransaction()

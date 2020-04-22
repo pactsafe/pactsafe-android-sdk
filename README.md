@@ -1,3 +1,4 @@
+![Package Publish CI](https://github.com/pactsafe/pactsafe-android-sdk/workflows/Package%20Publish%20CI/badge.svg)
 # PactSafe Android SDK
 
 - [Requirements](#requirements)
@@ -11,14 +12,10 @@
     - [Check if Checkbox is Selected](#check-if-checkbox-is-selected)
 	- [Sending Acceptance](#sending-acceptance)
 - [Checking Acceptance](#checking-acceptance)
-	- [Using the signedStatus Method](#using-the-signedstatus-method)
-	- [Using the PSAcceptanceViewController](#using-the-psacceptanceviewcontroller)
-	- [Using signedStatus Method and Present Alert](#using-signedstatus-method-and-present-alert)
 - [Sending Activity Manually](#sending-activity-manually)
 - [Customizing Acceptance Data](#customizing-acceptance-data)
 	- [Connection Data](#connection-data)
 	- [Custom Data](#custom-data)
-
 
 ## Requirements
 
@@ -35,12 +32,15 @@ Both the SDK and Demo app are written in Kotlin
 As you follow along in this guide, you may want to look at the PactSafe Android Demo App as an example.
 
 ## Installation
+
+First, aurthorize your app to use GitHub Packages: [GitHub Packages Authorization](https://help.github.com/en/packages/using-github-packages-with-your-projects-ecosystem/configuring-gradle-for-use-with-github-packages)
+
 Add the following dependency to your `build.app` gradle file. 
 ```kotlin
 implementation("com.pactsafe.androidsdk:{Version}")
 ```
 ## Configure and Initalize the PactSafe SDK
-It is recommended that you initialize the sdk in the `onCreate` in your `MainApplication` class. Your call might look something like this: 
+It is recommended that you initialize the sdk in `onCreate` in your `MainApplication` class. Your call might look something like this: 
 
 ```kotlin
 PSApp.init(
@@ -87,18 +87,19 @@ Before you start to implement, you may want to become familiar with a few data t
 
 ## PSClickWrapActivity
 
-The easiest way of getting started with using the PactSafe clickwrap is by utilizing our `PSClickWrapActivity` class to dynamically load your contracts into a Layout. The `PSClickWrapActivity` class extends AppCompatActivity, which allows you to easily customize and format the clickwrap as needed.
+The easiest way of getting started with using the PactSafe clickwrap is by utilizing `PSClickWrapActivity` class to dynamically load your contracts into a Layout. The `PSClickWrapActivity` class extends AppCompatActivity, which allows you to easily customize and format the clickwrap as needed.
 
 ```kotlin
 class YourActivity: PSClickWrapActivity() {}
 ```
 
 ### Starting a Clickwrap activity
-There are two types of clickwraps available from the SDK: 
+There are three types of clickwraps available from the SDK: 
 1. Checkbox Acceptance
 2. Alert Modal Acceptance
+3. Checkbox Within Existing View
 
-`PSClickWrapActivity` provides and easy way to create either. 
+`PSClickWrapActivity` provides and easy way to create either of the first two. 
 `PSClickWrapActivity.create()` accepts, along with `Context` and `Class<T>`, `ClickWrapType`. Choose from `CHECKBOX` or `ALERT`.
 
 You may start an activity like so: 
@@ -132,20 +133,82 @@ override fun onSignedStatusFetched(status: Map<String, Boolean>) {}
 
 #### Configure Contracts Link Tap Behavior
 
+In the third case, you may be uilding an acceptance view for your users to create a user, for instance, you can utilalize `PSCheckBoxView` in your layout as so: 
+
+```xml
+<com.pactsafe.pactsafeandroidsdk.ui.PSCheckBoxView
+            android:id="@+id/ps_checkbox_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+```
+If you wish the contract links to use your OS's native browser when tapped, just set the `useOSBrowser` attribute to `true`.  It defaults to false.
+
+When using the `CHECKBOX` Clickwrap, you can set this preference directly on the Activity by calling the `setUsesOSBrowser(Boolean)` function.
+
+If you use the default link tap setting, you will be handed a url in the `onContractLinkClicked` function.  Your implementation may look someting like: 
+```kotlin
+override fun onContractLinkClicked(title: String, url: String) {
+        loadWebView(title, url)
+}
+```
+
 #### Check if Checkbox is Selected
+
+When your users tick the checkbox, you will be alerted via the `onAcceptanceComplete` function. Here you might enable a submit button or something similar so that you can send acceptance assured that the box has been ticked.
+
+```kotlin
+override fun onAcceptanceComplete(checked: Boolean) {
+        btn_login.isEnabled = checked
+}
+```
+
 
 #### Sending Acceptance
 
+If you're using the `PSCheckBoxView` directly in your PS create a `PSSigner` object and include any custom data you wish. When you're ready, invoke the `sendAgreed` method available on the Activity. It will require a `PSSigner` object and an `EventType`
+```kotlin
+btn_signup.setOnClickListener {
+
+            it.isEnabled = false
+
+            val signer = PSSigner(
+                edit_email.text.toString(),
+                PSCustomData(edit_first_name.text.toString(), edit_last_name.text.toString())
+            )
+
+            sendAgreed(signer, EventType.AGREED)
+        }
+```
+Once the acceptance has been submitted successfully, you will be notified via `onSendAgreedComplete`.
+
+```kotlin
+override fun onSendAgreedComplete(downloadUrl: String) {
+        navigateToHome()
+}
+```
 ## Checking Acceptance
-
 ##### Receive Notice of Acceptance
+In order to determine if a user has accepted all of the latest contract language, you may invoke the `fetchSignedStatus` method on the Activity. This will return a `Map<String, Boolean>` called `status` for any contracts that need accepted. You'll need to see if there any in the list that require attention. If so, you must create a `PSSigner` object using the `username` and pass it to `showTermsIntercept` on the Activity.  An easy way to do so is: 
+```kotlin
+override fun onSignedStatusFetched(status: Map<String, Boolean>) {
 
-### Using signedStatus Method and Present Alert
+        val updateSignedStatus = status.values.any { !it }
+
+        val signer = PSSigner(edit_username.text.toString())
+
+        if (updateSignedStatus) {
+            showTermsIntercept(ALERT_TYPE, status, signer)
+        } else {
+            navigateToHome()
+        }
+}
+```
+Note: `ALERT_TYPE` is set `onCreate` for the parent activity and may be accessed here. Depending on the type of activity you've created, it will indicate to PSClickWrapActivity how to behave.
 
 ## Sending Activity Manually
+In the occurence that you would need to send an Activity Manually, you may simply invoke `PSApp.sendActivity` directly. This call will return a `Single<Boolean>` observable.  If you don't already, in this case, you will need to implement RXJava/RxAndroid
 
 ## Customizing Acceptance Data
-
 ### Connection Data
 Below, you'll find information on what to expect the SDK to send over as part of the activity event as "Connection Data", which is viewable within a PactSafe activity record. Many of the properties are set upon initialization except the optional properties (marked as optional below) using the following Apple APIs: `UIDevice`, `Locale`, and `TimeZone`. If you need further information about these properties, please reach out to us directly.
 

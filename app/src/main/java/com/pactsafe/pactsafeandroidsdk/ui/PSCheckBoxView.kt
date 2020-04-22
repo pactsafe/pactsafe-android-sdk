@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.view_acceptance_check.view.*
 class PSCheckBoxView(context: Context, private val attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
 
     private val clickObserver = PublishSubject.create<Boolean>()
+    private var useOSBrowser: Boolean = false
 
     init {
         View.inflate(context, R.layout.view_acceptance_check, this)
@@ -33,6 +34,10 @@ class PSCheckBoxView(context: Context, private val attrs: AttributeSet? = null) 
         setContractText(attrs, contracts)
     }
 
+    fun setUseOSBrowser(useBrowser: Boolean) {
+        useOSBrowser = useBrowser
+    }
+
     private fun setContractText(attrs: AttributeSet?, contracts: Map<String, Boolean> = emptyMap()) {
         attrs?.let {
             context.theme.obtainStyledAttributes(it, R.styleable.PSCheckBoxView, 0, 0).apply {
@@ -44,7 +49,7 @@ class PSCheckBoxView(context: Context, private val attrs: AttributeSet? = null) 
                             if (getBoolean(
                                     R.styleable.PSCheckBoxView_useOsBrowser,
                                     true
-                                )
+                                ) || useOSBrowser
                             ) PSApp.getContractLinkClickedList(context, contracts)
                             else PSApp.getContractLinks(context, contracts)
                         )
