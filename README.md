@@ -12,12 +12,10 @@
     - [Check if Checkbox is Selected](#check-if-checkbox-is-selected)
 	- [Sending Acceptance](#sending-acceptance)
 - [Checking Acceptance](#checking-acceptance)
-	
 - [Sending Activity Manually](#sending-activity-manually)
 - [Customizing Acceptance Data](#customizing-acceptance-data)
 	- [Connection Data](#connection-data)
 	- [Custom Data](#custom-data)
-
 
 ## Requirements
 
@@ -42,7 +40,7 @@ Add the following dependency to your `build.app` gradle file.
 implementation("com.pactsafe.androidsdk:{Version}")
 ```
 ## Configure and Initalize the PactSafe SDK
-It is recommended that you initialize the sdk in the `onCreate` in your `MainApplication` class. Your call might look something like this: 
+It is recommended that you initialize the sdk in `onCreate` in your `MainApplication` class. Your call might look something like this: 
 
 ```kotlin
 PSApp.init(
@@ -89,18 +87,19 @@ Before you start to implement, you may want to become familiar with a few data t
 
 ## PSClickWrapActivity
 
-The easiest way of getting started with using the PactSafe clickwrap is by utilizing our `PSClickWrapActivity` class to dynamically load your contracts into a Layout. The `PSClickWrapActivity` class extends AppCompatActivity, which allows you to easily customize and format the clickwrap as needed.
+The easiest way of getting started with using the PactSafe clickwrap is by utilizing `PSClickWrapActivity` class to dynamically load your contracts into a Layout. The `PSClickWrapActivity` class extends AppCompatActivity, which allows you to easily customize and format the clickwrap as needed.
 
 ```kotlin
 class YourActivity: PSClickWrapActivity() {}
 ```
 
 ### Starting a Clickwrap activity
-There are two types of clickwraps available from the SDK: 
+There are three types of clickwraps available from the SDK: 
 1. Checkbox Acceptance
 2. Alert Modal Acceptance
+3. Checkbox Within Existing View
 
-`PSClickWrapActivity` provides and easy way to create either. 
+`PSClickWrapActivity` provides and easy way to create either of the first two. 
 `PSClickWrapActivity.create()` accepts, along with `Context` and `Class<T>`, `ClickWrapType`. Choose from `CHECKBOX` or `ALERT`.
 
 You may start an activity like so: 
@@ -134,7 +133,7 @@ override fun onSignedStatusFetched(status: Map<String, Boolean>) {}
 
 #### Configure Contracts Link Tap Behavior
 
-When building an acceptance view for your users to create a user, for instance, you can utilalize `PSCheckBoxView` in your layout as so: 
+In the third case, you may be uilding an acceptance view for your users to create a user, for instance, you can utilalize `PSCheckBoxView` in your layout as so: 
 
 ```xml
 <com.pactsafe.pactsafeandroidsdk.ui.PSCheckBoxView
