@@ -1,7 +1,7 @@
 name: Package Publish CI
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -12,9 +12,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: Set Run ID
       run: |
-        echo ::set-env name=BOT_USERNAME::${{ secrets.BOT_USERNAME }}
-        echo ::set-env name=BOT_TOKEN::${{ secrets.BOT_TOKEN }}
-        echo ::set-env name=GITHUB_RUN_ID::${{ github.run_id }}
+        echo "BOT_USERNAME=${{ secrets.BOT_USERNAME }}" >> $GITHUB_ENV
+        echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" >> $GITHUB_ENV
+        echo "GITHUB_RUN_ID=${{ github.run_id }}" >> $GITHUB_ENV
 
     - name: Assemble the aar file
       run: ./gradlew assemble
