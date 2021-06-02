@@ -7,15 +7,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    env:
+      BOT_USERNAME: ${{secrets.BOT_USERNAME}}
+      BOT_TOKEN: ${{secrets.BOT_TOKEN}}
+      GITHUB_RUN_ID: ${{github.run_id}} # Do we need this? This seems to be a default enviornment variable 
     
     steps:
+    - name: Checkout Repository
     - uses: actions/checkout@v2
-    - name: Set Run ID
-      run: |
-        echo "BOT_USERNAME=${{ secrets.BOT_USERNAME }}" >> $GITHUB_ENV
-        echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" >> $GITHUB_ENV
-        echo "GITHUB_RUN_ID=${{ github.run_id }}" >> $GITHUB_ENV
-
+   
     - name: Assemble the aar file
       run: ./gradlew assemble
 
