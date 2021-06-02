@@ -1,26 +1,26 @@
 name: Package Publish CI
 on:
-  push:
-    branches: [ main ]
+  push
+    # branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    env:
-      BOT_USERNAME: ${{secrets.BOT_USERNAME}}
-      BOT_TOKEN: ${{secrets.BOT_TOKEN}}
-      GITHUB_RUN_ID: ${{github.run_id}} # Do we need this? This seems to be a default enviornment variable 
     
     steps:
     - name: Checkout Repository
-    - uses: actions/checkout@v2
+      uses: actions/checkout@v2
    
     - name: Assemble the aar file
       run: ./gradlew assemble
 
     - name: Publish Package
       run: ./gradlew publish
+      env:
+        BOT_USERNAME: ${{secrets.BOT_USERNAME}}
+        BOT_TOKEN: ${{secrets.BOT_TOKEN}}
+        GITHUB_RUN_ID: ${{github.run_id}}
     
     - name: Read Properties
       id: read_property
@@ -28,37 +28,38 @@ jobs:
       with:
         path: './version.properties'
         property: 'version'
+
     - name: Print Version
       run: echo ${{ steps.read_property.outputs.value }}
 
-    - name: Tag Release
-      run: |
-        git config --local user.email bot@pactsafe.com
-        git config --local user.name "PactSafe Publish Action"
-        git tag ${{ steps.read_property.outputs.value }}
-        git push --tags
+    # - name: Tag Release
+    #   run: |
+    #     git config --local user.email bot@pactsafe.com
+    #     git config --local user.name "PactSafe Publish Action"
+    #     git tag ${{ steps.read_property.outputs.value }}
+    #     git push --tags
 
-    - uses: actions/checkout@v2
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@latest
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      with:
-        tag_name: ${{ steps.read_property.outputs.value }}
-        release_name: Release ${{ steps.read_property.outputs.value }}
-        body: |
-          Changes in this Release
-          - First Change
-          - Second Change
-        draft: false
-        prerelease: falsel
+    # - uses: actions/checkout@v2
+    # - name: Create Release
+    #   id: create_release
+    #   uses: actions/create-release@latest
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+    #   with:
+    #     tag_name: ${{ steps.read_property.outputs.value }}
+    #     release_name: Release ${{ steps.read_property.outputs.value }}
+    #     body: |
+    #       Changes in this Release
+    #       - First Change
+    #       - Second Change
+    #     draft: false
+    #     prerelease: falsel
     
-    - name: Increment Version Revision
-      run: ./gradlew incrementRevision
+    # - name: Increment Version Revision
+    #   run: ./gradlew incrementRevision
       
-    - name: Commit changes
-      run: git commit -am "[skip ci] version revision bump"
+    # - name: Commit changes
+    #   run: git commit -am "[skip ci] version revision bump"
         
-    - name: Push Changes
-      run: git push
+    # - name: Push Changes
+    #   run: git push
