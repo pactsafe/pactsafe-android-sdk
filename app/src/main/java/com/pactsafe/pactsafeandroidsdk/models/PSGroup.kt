@@ -18,7 +18,7 @@ data class PSGroup(
     // Group Key
     val key: String,
     // Group ID
-    val id: Int,
+    val group: Int,
     // Contract IDs that are part of the group
     val contracts: List<Int>,
     // Contract Version IDs that are part of the group.

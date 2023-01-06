@@ -33,7 +33,7 @@ class ActivityServiceImp(private val activityAPI: ActivityAPI) :
                 "sig" to signer.signerId,
                 "et" to et,
                 "cus" to signer.customData.toString(),
-                "gid" to group?.id.toString(),
+                "gid" to group?.group.toString(),
                 "cnf" to group?.confirmation_email.toString(),
                 "tm" to false.toString(),
                 "sid" to applicationPreferences.siteAccessId
