@@ -15,9 +15,7 @@ var versionProps = Properties()
 
 FileInputStream(versionFile).use { stream -> versionProps.load(stream) }
 val versionNumber = versionProps["version"].toString()
-
-val envBuildNumber = (System.getenv("GITHUB_RUN_ID") ?: "0").toBigInteger()
-
+val envBuildNumber = versionProps["version_code"] as? Int ?: 0
 
 android {
     compileSdkVersion(Android.compileSdkVersion)
