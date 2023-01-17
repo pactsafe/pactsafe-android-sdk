@@ -11,7 +11,7 @@ jobs:
       BOT_USERNAME: ${{ secrets.BOT_USERNAME }}
       BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
       GITHUB_RUN_ID: ${{ github.run_id }}
-    
+
     steps:
     - uses: actions/checkout@v2
 
@@ -20,7 +20,7 @@ jobs:
 
     - name: Publish Package
       run: ./gradlew publish
-    
+
     - name: Read Properties
       id: read_property
       uses: christian-draeger/read-properties@1.0.1
@@ -46,18 +46,14 @@ jobs:
       with:
         tag_name: ${{ steps.read_property.outputs.value }}
         release_name: Release ${{ steps.read_property.outputs.value }}
-        body: |
-          Changes in this Release
-          - First Change
-          - Second Change
         draft: false
-        prerelease: falsel
-    
+        prerelease: false
+
     - name: Increment Version Revision
       run: ./gradlew incrementRevision
-      
+
     - name: Commit changes
       run: git commit -am "[skip ci] version revision bump"
-        
+
     - name: Push Changes
       run: git push

@@ -54,7 +54,6 @@ fun incrementMinorVersion() {
     }
 
     println("Major Version has been updated to: ${version["version"]}")
-
 }
 
 fun incrementRevisionVersion() {
@@ -64,9 +63,12 @@ fun incrementRevisionVersion() {
     var revision = version.getProperty("revision").toInt()
     revision++
 
+    var versionCode = version.getProperty("version_code").toInt()
+    versionCode++
+    version.setProperty("version_code", versionCode.toString())
+
     version.setProperty("revision", revision.toString())
     version.setProperty("version", "${version["major"] ?: 0}.${version["minor"] ?: 0}.${version["revision"] ?: 0}")
-
 
     FileOutputStream(versionFile).use { stream ->
         version.store(stream, null)
